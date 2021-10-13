@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-soypropi-dev-181906-authRole",
+      "UnauthRoleArn": "arn:aws:iam::935952977831:role/amplify-soypropi-dev-181906-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::935952977831:role/amplify-soypropi-dev-181906-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-soypropi-dev-181906-deployment",
+      "UnauthRoleName": "amplify-soypropi-dev-181906-unauthRole",
+      "StackName": "amplify-soypropi-dev-181906",
+      "StackId": "arn:aws:cloudformation:us-east-1:935952977831:stack/amplify-soypropi-dev-181906/0ab197f0-2ba2-11ec-be8a-0ebdb410ebcf",
+      "AmplifyAppId": "d9rnlbos8mumi"
+    },
+    "categories": {
+      "auth": {
+        "soypropi44e216b3": {}
+      }
+    }
+  }
+}
