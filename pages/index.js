@@ -1,6 +1,12 @@
-import Head from "next/head";
-import Image from "next/image";
+import HotActionButton from "../components/HotActionButton";
+import styles from "../styles/Home.module.css";
 
-export default function Home() {
-  return <div></div>;
+function Index() {
+  return (
+    <div className={styles.container}>
+      <HotActionButton />
+    </div>
+  );
 }
+
+export default Index;

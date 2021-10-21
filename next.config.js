@@ -10,4 +10,13 @@ module.exports = withPWA({
     scope: "/app",
     sw: "sw.js",
   },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/signin",
+  //       destination: "/protected",
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
 });

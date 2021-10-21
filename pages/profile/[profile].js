@@ -1,6 +1,6 @@
 import { getSession, useSession } from "next-auth/client";
 
-function Index({ data }) {
+function Profile({ data }) {
   const [session] = useSession();
   return <h1>Hello {data.user.name} from SSR route!</h1>;
 }
@@ -16,11 +16,11 @@ export async function getServerSideProps(context) {
     };
   }
   return {
-    redirect: {
-      destination: "/",
-      permanent: false,
+    props: {
+      session,
+      data: session && session,
     },
   };
 }
 
-export default Index;
+export default Profile;
