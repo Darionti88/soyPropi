@@ -13,4 +13,23 @@ export default NextAuth({
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     }),
   ],
+  database: process.env.MONGODB_URI,
+  session: {
+    jwt: true,
+  },
+  jwt: {
+    secret: "dsjkbnfldsñ",
+  },
+  callbacks: {
+    async jwt(token, user) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session(session, token) {
+      session.user.id = token.id;
+      return session;
+    },
+  },
 });
