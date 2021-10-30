@@ -17,16 +17,6 @@ const HotActionButton = () => {
           incidunt saepe distinctio aperiam ratione aliquam odio porro
           temporibus cum dolorem quod libero!
         </p>
-        <Link href='/signin' passHref>
-          <a className='rounded bg-blue-300 hover:bg-blue-600 text-4xl text-white py-3 px-3'>
-            Individual
-          </a>
-        </Link>
-        <Link href='/signin' passHref>
-          <a className='rounded bg-blue-300 hover:bg-blue-600 text-4xl  text-white py-3 px-3'>
-            Business
-          </a>
-        </Link>
       </div>
     </div>
   );
