@@ -7,37 +7,42 @@ import {
   Input,
   Button,
   Text,
+  Select,
 } from "@chakra-ui/react";
 import { getSession } from "next-auth/client";
 import { Formik, useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
+import { useRouter } from "next/router";
+import User from "../../models/User";
 
 const CreateProfileName = ({ user }) => {
   const [message, setMessage] = useState();
+  const router = useRouter();
 
-  const nameSchema = Yup.object().shape({
+  const profileSchema = Yup.object().shape({
     profileName: Yup.string()
       .min(4, "Too Short!")
       .matches(/^\S*$/, "No puede tener espacios entre las palabras")
-      .max(15, "Too Long!")
+      .max(20, "Too Long!")
       .required("Required"),
+    accountType: Yup.string().required("Required"),
   });
-  // const [session] = useSession();
 
   return (
     <>
       <Formik
-        initialValues={{ profileName: "" }}
-        validationSchema={nameSchema}
+        initialValues={{ profileName: "", accountType: "individual" }}
+        validationSchema={profileSchema}
         onSubmit={async (values, { resetForm }) => {
           try {
-            const res = await axios.put(`/api/users/${user.id}`, values);
-            console.log(res.data.data);
+            await axios.put(`/api/users/${user.id}`, values);
             resetForm();
-          } catch (error) {
-            console.log(error);
-            setMessage(error.message);
+            setMessage("");
+            router.replace(`/edit_account`);
+          } catch (err) {
+            console.log(err);
+            setMessage(err.message);
           }
         }}>
         {({
@@ -47,9 +52,6 @@ const CreateProfileName = ({ user }) => {
           handleChange,
           handleBlur,
           handleSubmit,
-          resetForm,
-          isSubmitting,
-          /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
             <FormControl
@@ -71,6 +73,25 @@ const CreateProfileName = ({ user }) => {
                 Este va a ser el nombre por el que los demás te podrán encontrar
               </FormHelperText>
               <FormErrorMessage>{errors.profileName}</FormErrorMessage>
+            </FormControl>
+            <FormControl
+              id='accountType'
+              isRequired
+              isInvalid={touched.accountType && errors.accountType}>
+              <FormLabel>Que tipo de cuenta querés?</FormLabel>
+              <Select
+                name='accountType'
+                value={values.accountType}
+                placeholder='Seleccioná tipo de Cuenta'
+                onBlur={handleBlur}
+                onChange={handleChange}>
+                <option value='individual'>Individual</option>
+                <option value='business'>Business</option>
+              </Select>
+              <FormHelperText>
+                El tipo de cuenta depende de que necesitas
+              </FormHelperText>
+              <FormErrorMessage>{errors.accountType}</FormErrorMessage>
             </FormControl>
             <Button type='submit'>Guardar</Button>
           </form>

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
+import { redirect } from "next/dist/server/api-utils";
 
 export default NextAuth({
   providers: [
@@ -20,12 +21,18 @@ export default NextAuth({
   jwt: {
     secret: "dsjkbnfldsñ",
   },
+  pages: {
+    newUser: "/setup_account",
+  },
   callbacks: {
     async jwt(token, user) {
       if (user) {
         token.id = user.id;
       }
       return token;
+    },
+    async redirect({ url, baseUrl }) {
+      return "/edit_account";
     },
     async session(session, token) {
       session.user.id = token.id;
