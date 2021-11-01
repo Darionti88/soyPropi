@@ -3,4 +3,6 @@
 @tailwind utilities;
 
 body{
-    font-family: 'Poppins', sans-serif;}
+    background-image: linear-gradient(to right bottom, #ffffff, #e1d5ef, #cfa9d8, #c37ab8, #ba448f);}
+
+  
