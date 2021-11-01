@@ -10,7 +10,7 @@ const Signin = () => {
   const [user, setUser] = useState();
 
   return (
-    <div>
+    <div className='h-screen'>
       <VStack>
         <Button
           onClick={() => signIn("facebook")}
