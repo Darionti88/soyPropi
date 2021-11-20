@@ -20,16 +20,13 @@ import User from "../../models/User";
 import axios from "axios";
 
 function EditProfile({ data }) {
-  const [profileName, setProfileName] = useState(data.profileName);
+  const [newProfileName, setNewProfileName] = useState(data.profileName);
 
-  const handleSubmitProfileName = () => {
-    alert(profileName);
-  };
-
-  const getMercadoPagoInfo = async () => {
-    const resultInfo = await axios.get(
-      "http://localhost:3000/api/mercadopago/callback"
-    );
+  const handleSubmitProfileName = async () => {
+    const response = await axios.put(`/api/users/${data._id}`, {
+      profileName: newProfileName,
+    });
+    alert("Nombre de Perfil Actualizado");
   };
 
   return (
@@ -46,10 +43,10 @@ function EditProfile({ data }) {
               variant='filled'
               size='lg'
               type='text'
-              value={profileName}
+              value={newProfileName}
               placeholder={data.profileName}
               backgroundColor='#FFF'
-              onChange={(e) => setProfileName(e.target.value)}
+              onChange={(e) => setNewProfileName(e.target.value)}
             />
           </InputGroup>
           <Button
@@ -69,7 +66,7 @@ function EditProfile({ data }) {
       <ButtonGroup>
         <VStack>
           <Link
-            href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
+            href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${data._id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
             passHref>
             <Button
               rightIcon={<ArrowForwardIcon />}
@@ -95,7 +92,7 @@ function EditProfile({ data }) {
 }
 
 export async function getServerSideProps(context) {
-  await dbConnect();
+  const connected = await dbConnect();
   const session = await getSession(context);
 
   if (!session) {
@@ -108,7 +105,6 @@ export async function getServerSideProps(context) {
   } else {
     const singleUser = await User.findOne({ _id: session.user.id });
     const user = JSON.parse(JSON.stringify(singleUser));
-    console.log(user);
     return {
       props: {
         data: user,

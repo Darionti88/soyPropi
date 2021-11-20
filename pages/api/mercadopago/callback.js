@@ -1,35 +1,20 @@
-import dbConnect from "../../../lib/mongodb";
 const url = require("url");
+import axios from "axios";
 
 export default async function handler(req, res) {
-  const { method } = req;
-
-  await dbConnect();
-
-  switch (method) {
-    case "GET":
-      try {
-        const code = url.parse(req.url, true).query;
-        res.status(200).json({ success: true, code: code.code });
-        res.writeHead(200, { "Content-Type": "text/html" });
-        return res.redirect("/edit_account");
-      } catch (error) {
-        res.status(400).json({ success: false });
-      }
-      break;
-    // case "POST":
-    //   try {
-    //     const myUser = await user.create(
-    //       req.body
-    //     ); /* create a new model in the database */
-    //     res.status(201).json({ success: true, data: myUser });
-    //     res.redirect(307, "/edit-account").end();
-    //   } catch (error) {
-    //     res.status(400).json({ success: false });
-    //   }
-    //   break;
-    default:
-      res.status(400).json({ success: false });
-      break;
+  try {
+    const { code, state } = url.parse(req.url, true).query;
+    const response = await axios.post(
+      `https://api.mercadopago.com/oauth/token?client_secret=TEST-6610547979814243-110815-45203cd05ff1743671a10c89629b4cb1-59429374&grant_type=authorization_code&code=${code}&redirect_uri=http://localhost:3000/api/mercadopago/callback`
+    );
+    const mpResponse = await axios.put(
+      `http://localhost:3000/api/users/${state}`,
+      response.data
+    );
+    // console.log(mpResponse);
+    return res.redirect("/edit_account");
+  } catch (err) {
+    console.log(err);
+    return res.redirect("/edit_account");
   }
 }
