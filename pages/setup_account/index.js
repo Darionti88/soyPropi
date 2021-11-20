@@ -39,7 +39,7 @@ const CreateProfileName = ({ user }) => {
             await axios.put(`/api/users/${user.id}`, values);
             resetForm();
             setMessage("");
-            router.replace(`/edit_account`);
+            router.push(`/edit_account`);
           } catch (err) {
             console.log(err);
             setMessage(err.message);
