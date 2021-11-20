@@ -10,7 +10,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { getSession } from "next-auth/client";
-import { Formik, useFormik } from "formik";
+import { Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useRouter } from "next/router";

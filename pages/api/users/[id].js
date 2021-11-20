@@ -21,7 +21,7 @@ export default async (req, res) => {
       break;
     case "PUT":
       try {
-        const myUser = await User.findByIdAndUpdate(id, body, {
+        const myUser = await User.findByIdAndUpdate({ _id: id }, body, {
           new: true,
           strict: false,
         });
