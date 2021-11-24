@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import { redirect } from "next/dist/server/api-utils";
 
 export default NextAuth({
   providers: [
@@ -35,7 +34,9 @@ export default NextAuth({
       return "/edit_account";
     },
     async session(session, token) {
+      session.user.name = token.name;
       session.user.id = token.id;
+
       return session;
     },
   },
