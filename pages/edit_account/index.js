@@ -105,11 +105,20 @@ export async function getServerSideProps(context) {
   } else {
     const singleUser = await User.findOne({ _id: session.user.id });
     const user = JSON.parse(JSON.stringify(singleUser));
-    return {
-      props: {
-        data: user,
-      },
-    };
+    if (!singleUser?.profileName) {
+      return {
+        redirect: {
+          destination: "/setup_account",
+          permanent: false,
+        },
+      };
+    } else {
+      return {
+        props: {
+          data: user,
+        },
+      };
+    }
   }
 }
 
