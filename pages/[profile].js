@@ -19,15 +19,14 @@ import {
 } from "@chakra-ui/react";
 
 function Profile({ data }) {
-  const [total, setTotal] = useState();
-  const [custom, setCustom] = useState();
+  const [total, setTotal] = useState("");
+  const [custom, setCustom] = useState("");
 
   const calculateTip = (percentage, value) => {
     const totalTip = (value * percentage) / 100;
     return totalTip;
   };
 
-  console.log(data.image);
   return (
     <div className='container mx-auto  h-screen items-center flex justify-center flex-col'>
       <div className='block h-300 mb-10'>

@@ -38,14 +38,13 @@ const Navbar = () => {
           </>
         )}
 
-        {!session && (
+        {!session ? (
           <li>
             <Link href='/signin' className='font-bold'>
               Sign In
             </Link>
           </li>
-        )}
-        {session && (
+        ) : (
           <li>
             <Button
               size='lg'
