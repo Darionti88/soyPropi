@@ -9,13 +9,15 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <nav className='flex justify-between items-center px-10 py-3 sticky z-50 top-0 bg-white shadow-md rounded-br-lg rounded-bl-lg'>
+    <nav className='flex justify-between items-center px-10 py-3 sticky z-50 top-0'>
       <div className=''>
         <Link href='/'>
-          <a className='text-6xl font-bold font-metro propi'>Propi</a>
+          <a className=' bg-primary-green px-3 py-1 text-4xl font-bold border-2 border-text font-metro'>
+            Propi
+          </a>
         </Link>
       </div>
-      <ul className='flex flex-1 items-center space-x-20 justify-end text-3xl pr-10'>
+      <ul className='flex flex-1 items-center space-x-20 justify-end text-1xl pr-10'>
         {session && (
           <li>
             <Link href='/edit_account' className='font-bold  '>
@@ -23,25 +25,13 @@ const Navbar = () => {
             </Link>
           </li>
         )}
-        {router.route === "/" && (
-          <>
-            <li>
-              <Link href='/profile' className='font-bold '>
-                About
-              </Link>
-            </li>
-            <li>
-              <Link href='/profile' className='font-bold '>
-                Contact
-              </Link>
-            </li>
-          </>
-        )}
 
         {!session ? (
           <li>
-            <Link href='/signin' className='font-bold'>
-              Sign In
+            <Link href='/signin' passHref>
+              <button className='button_signin'>
+                <span className='button_top text-lg'> Sign In</span>
+              </button>
             </Link>
           </li>
         ) : (

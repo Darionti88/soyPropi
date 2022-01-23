@@ -20,11 +20,7 @@ class MyDocument extends Document {
             rel='stylesheet'
           />
         </Head>
-        <body
-          style={{
-            backgroundImage:
-              "linear-gradient(to bottom, #FCEFEF,#FCEFEF, #e1d5ef, #FCEFEF)",
-          }}>
+        <body className='bg-background'>
           <Main />
           <NextScript />
         </body>
