@@ -9,28 +9,24 @@ const HotActionButton = () => {
   return (
     <div className='flex md:flex-row-reverse xs:flex-col h-screen space-x-20'>
       <div className=' flex-1 justify-center flex items-center'>
-        <Image src={HotImage} alt='Mobile_Confirmation' />
+        <Image
+          src={HotImage}
+          height={674}
+          width={856}
+          alt='Mobile_Confirmation'
+        />
       </div>
-      <div className=' flex-1 flex flex-col items-center justify-center  py-10 space-y-10 '>
-        <h5 className='text-6xl font-exo2 font-bold '>
-          Ahora con <span className='propi text-8xl'>Propi</span> las propinas
-          son Cashless
+      <div className=' flex-1 flex flex-col items-start justify-center py-6 space-y-12 '>
+        <h5 className='text-4xl font-exo2 font-bold '>
+          Con <span className='propi text-6xl'>Propi</span> las propinas son
+          Cashless
         </h5>
         <p className='text-2xl font-hind font-medium'>
-          Si sos un negocio vas a poder cobrar las propinas a través de un
-          Código QR y repartir el total de la jornada entre todos los que
-          trabajaron.
-          <br /> Y si cobrás tu propia propina todo va a tu cuenta!
+          Ahora vas a poder recibir tu propina simplemente a través de un QR
         </p>
-        <Button
-          color='#FFF'
-          backgroundColor='#F57C00'
-          width='30%'
-          variant='solid'
-          size='lg'
-          alignSelf='flex-start'>
-          Crear Cuenta
-        </Button>
+        <button className='button_signin'>
+          <span className='button_top text-lg'> Crear Cuenta</span>
+        </button>{" "}
       </div>
     </div>
   );
