@@ -7,10 +7,22 @@ module.exports = {
       metro: ["Metrophobic", "sans-serif"],
       hind: ["Hind", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      colors: {
+        background: "#F5F1F0",
+        primary: {
+          salmon: "#FF7E82",
+          green: "#7FD1AE",
+          mpago: "#74b9d9",
+          mpago700: "#008ad6",
+        },
+        text: "#3B3837",
+        secondText: "#cabea3",
+      },
+    },
+    variants: {
+      extend: {},
+    },
+    plugins: [],
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
 };
