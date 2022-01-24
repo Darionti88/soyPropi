@@ -11,9 +11,13 @@ export default async (req, res) => {
     case "GET":
       try {
         res.status(200).json({
-          Payment: payment_id,
-          Status: status,
-          MerchantOrder: merchant_order_id,
+          payment: "99872398",
+          status: "approved",
+          merchantOrder: "983739821",
+
+          // payment: payment_id,
+          // status: status,
+          // merchantOrder: merchant_order_id,
         });
       } catch (error) {
         res.status(400).json({ success: false });

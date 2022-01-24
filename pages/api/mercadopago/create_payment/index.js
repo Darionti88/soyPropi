@@ -20,9 +20,9 @@ export default async (req, res) => {
         ],
         statement_descriptor: body.description,
         back_urls: {
-          success: "http://localhost:3000/api/mercadopago/feedback",
-          failure: "http://localhost:3000/api/mercadopago/feedback",
-          pending: "http://localhost:3000/api/mercadopago/feedback",
+          success: "http://localhost:3000/feedback/success",
+          failure: "http://localhost:3000/feedback/failure",
+          pending: "http://localhost:3000/feedback/pending",
         },
         auto_return: "approved",
         // marketplace_fee: 1,
