@@ -1,34 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+Propi is a Platform looking to make the process of receiving a tip easier for Delivery Boys, Waiters or anyone that can accepts tips. 💵
 
-First, run the development server:
+With Propi the tip is cashless. So now there is no excuse!
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+When you create an account you can link your Mercado Pago account and the tips will go directly there. You will be able to generate a QR code wich will send your customer to your customized Propi profile. There the customer can insert the total ammount and can decide to tip fixed amounts (porcentages of the total ammount) or a custom ammount of money.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The checkout process is handled by Mercado Pago so it is secure and you have nothing to worry about.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+!----------------------------------------------------------- S P A N I S H ------------------------------------------------------
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Propi es una Plataforma que busca facilitar el proceso de recibir propina para Repartidores, Meseros o cualquier persona que pueda aceptar propinas.💵
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Con Propi la propina es sin efectivo. ¡Así que no hay excusa!
 
-## Learn More
+Al crear una cuenta puedes vincular tu cuenta de Mercado Pago y las propinas irán directamente ahí. Podrá generar un código QR que enviará a su cliente a su perfil Propi personalizado. Allí el cliente puede ingresar el monto total del consumo y se le sugerirá unos montos fijos (porcentajes del monto total) o podrá elegir dar el monto personalizado que quiera.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+El proceso de pago lo maneja Mercado Pago haciendolo super seguro.
