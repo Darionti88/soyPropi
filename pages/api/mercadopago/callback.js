@@ -11,7 +11,6 @@ export default async function handler(req, res) {
       `http://localhost:3000/api/users/${state}`,
       response.data
     );
-    // console.log(mpResponse);
     return res.redirect("/edit_account");
   } catch (err) {
     console.log(err);
