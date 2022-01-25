@@ -20,9 +20,9 @@ export default async (req, res) => {
         ],
         statement_descriptor: body.description,
         back_urls: {
-          success: "http://localhost:3000/feedback/success",
-          failure: "http://localhost:3000/feedback/failure",
-          pending: "http://localhost:3000/feedback/pending",
+          success: "http://localhost:3000/feedback",
+          failure: "http://localhost:3000/feedback",
+          pending: "http://localhost:3000/feedback",
         },
         auto_return: "approved",
         // marketplace_fee: 1,

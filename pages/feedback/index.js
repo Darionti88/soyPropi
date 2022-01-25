@@ -1,19 +1,33 @@
-import { useEffect, useState } from "react";
-
 import { useRouter } from "next/router";
-import axios from "axios";
 import Success from "../../components/feedback/Success";
-import Failure from "../../components/feedback/Failure";
+import SuccessImage from "../../assets/images/feedbackImages/success.svg";
+import FailureImage from "../../assets/images/feedbackImages/failure.svg";
+import PendingImage from "../../assets/images/feedbackImages/pending.svg";
 
 function Feedback() {
   const { query } = useRouter();
+  const paymentText = {
+    success: "Tu Pago fue Exitoso! Muchas Gracias",
+    failure: "Ups! Algo Salió Mal. Por favor intentá más tarde",
+    pending: "Tu pago se está procesando",
+  };
 
-  if (query.status === "approved") {
-    return <Success status={query.status} />;
+  const status = query.status;
+
+  switch (status) {
+    case "approved":
+      return <Success image={SuccessImage} text={paymentText.success} />;
+      break;
+    case "failure":
+      return <Success image={FailureImage} text={paymentText.failure} />;
+      break;
+    case "pending":
+      return <Success image={PendingImage} text={paymentText.pending} />;
+      break;
+    default:
+      return <Success image={PendingImage} text={paymentText.pending} />;
+      break;
   }
-  if (query.status === "failure") {
-    return <Failure status={query.status} />;
-  } else return <Success status={query.status} />;
 }
 
 export default Feedback;
