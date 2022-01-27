@@ -7,16 +7,17 @@ import { Button } from "@chakra-ui/button";
 
 const HotActionButton = () => {
   return (
-    <div className='flex md:flex-row-reverse xs:flex-col h-screen space-x-20'>
-      <div className=' flex-1 justify-center flex items-center'>
+    <div className='flex md:flex-row-reverse flex-col-reverse w-5/6 md:w-4/6 space-y-5'>
+      <div className='block  w-full'>
         <Image
           src={HotImage}
           height={674}
           width={856}
           alt='Mobile_Confirmation'
+          layout='responsive'
         />
       </div>
-      <div className=' flex-1 flex flex-col items-start justify-center py-6 space-y-12 '>
+      <div className='flex flex-col justify-center py-6  space-y-10 '>
         <h5 className='text-4xl font-exo2 font-bold '>
           Con <span className='propi text-6xl'>Propi</span> las propinas son
           Cashless

@@ -9,7 +9,7 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <nav className='flex justify-between items-center px-10 py-3 sticky z-50 top-0'>
+    <nav className='flex justify-between items-center sm:px-10 px-3 py-3 sticky z-50 top-0 md:mb-5'>
       <div className=''>
         <Link href='/'>
           <a className=' bg-primary-green px-3 py-1 text-4xl font-bold border-2 border-text font-metro'>
@@ -17,7 +17,7 @@ const Navbar = () => {
           </a>
         </Link>
       </div>
-      <ul className='flex flex-1 items-center space-x-20 justify-end text-1xl pr-10'>
+      <ul className='flex flex-1 items-center space-x-3 md:space-x-20 justify-end text-2xl md:pr-10'>
         {session && (
           <li>
             <Link href='/edit_account' className='font-bold  '>
@@ -36,13 +36,11 @@ const Navbar = () => {
           </li>
         ) : (
           <li>
-            <Button
-              size='lg'
-              onClick={() => signOut()}
-              textColor='#FFF'
-              colorScheme='purple'>
-              Sign Out
-            </Button>
+            <button
+              className='rounded-md p-3 text-gray-50  bg-primary-mpago700'
+              onClick={() => signOut()}>
+              <span className='font-hindi font-bold text-lg'> Sign Out</span>
+            </button>
           </li>
         )}
       </ul>

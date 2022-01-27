@@ -4,8 +4,8 @@ import HotImage from "../assets/images/delivery.svg";
 
 const HowItWorks = () => {
   return (
-    <div className='flex md:flex-row xs:flex-col h-screen space-x-20'>
-      <div className=' flex-1 justify-center  block'>
+    <div className='flex md:flex-row-reverse flex-col-reverse md:w-4/6 w-5/6 space-y-5'>
+      <div className='block  w-full'>
         <Image
           src={HotImage}
           alt='Mobile_Confirmation'
@@ -14,7 +14,7 @@ const HowItWorks = () => {
           layout='responsive'
         />
       </div>
-      <div className=' flex-1 flex flex-col items-center justify-center  py-10 space-y-10 '>
+      <div className='flex flex-col justify-center py-6  space-y-10 '>
         <h5 className='text-3xl font-exo2 font-bold '>
           Como funciona <span className='propi text-5xl'>Propi</span> ?
         </h5>

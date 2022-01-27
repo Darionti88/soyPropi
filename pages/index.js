@@ -3,7 +3,7 @@ import HowItWorks from "../components/HowItWorks";
 
 function Index() {
   return (
-    <div className='container mx-auto min-h-screen'>
+    <div className='container min-h-screen flex flex-col items-center justify-center md:space-y-14'>
       <HotActionButton />
       <HowItWorks />
     </div>
