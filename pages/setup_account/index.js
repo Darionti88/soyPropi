@@ -4,10 +4,8 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
-  Input,
   Button,
   Text,
-  Select,
 } from "@chakra-ui/react";
 import { getSession } from "next-auth/client";
 import { Formik } from "formik";
@@ -15,6 +13,8 @@ import axios from "axios";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import User from "../../models/User";
+import rightArrow from "../../assets/svgIcons/rightArrow.svg";
+import SaveButton from "../../components/Buttons/SaveButton";
 
 const CreateProfileName = ({ user }) => {
   const [message, setMessage] = useState();
@@ -22,21 +22,28 @@ const CreateProfileName = ({ user }) => {
 
   const profileSchema = Yup.object().shape({
     profileName: Yup.string()
-      .min(4, "Too Short!")
+      .min(4, "Muy corto! Mínimo 4 letras.")
       .matches(/^\S*$/, "No puede tener espacios entre las palabras")
       .max(20, "Too Long!")
       .required("Required"),
-    accountType: Yup.string().required("Required"),
   });
 
   return (
-    <>
+    <div
+      className='container mx-auto w-5/6 md:w-1/2 flex flex-col items-center 
+    justify-center space-y-10'>
+      <h1 className='text-3xl sm:text-5xl font-hindi font-bold sm:mt-5'>
+        Elegí tu nombre de Usuario
+      </h1>
       <Formik
         initialValues={{ profileName: "", accountType: "individual" }}
         validationSchema={profileSchema}
         onSubmit={async (values, { resetForm }) => {
           try {
-            await axios.put(`/api/users/${user.id}`, values);
+            await axios.put(`/api/users/${user.id}`, {
+              ...values,
+              accountType: "individual",
+            });
             resetForm();
             setMessage("");
             router.push(`/edit_account`);
@@ -49,11 +56,15 @@ const CreateProfileName = ({ user }) => {
           values,
           errors,
           touched,
+          isValid,
+          isSubmitting,
           handleChange,
           handleBlur,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            className='flex flex-col space-y-7 items-center justify-center'>
             <FormControl
               id='profileName'
               isRequired
@@ -61,10 +72,10 @@ const CreateProfileName = ({ user }) => {
               <FormLabel>
                 Hola {user.name} Elegí el nombre de tu perfil
               </FormLabel>
-              <Input
+              <input
+                className='bg-white w-full h-10 rounded-md px-3 border-2 border-grey-100'
                 placeholder='Ej: baloDelMattone'
-                type='text'
-                size='md'
+                name='profileName'
                 value={values.profileName}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -74,37 +85,22 @@ const CreateProfileName = ({ user }) => {
               </FormHelperText>
               <FormErrorMessage>{errors.profileName}</FormErrorMessage>
             </FormControl>
-            <FormControl
-              id='accountType'
-              isRequired
-              isInvalid={touched.accountType && errors.accountType}>
-              <FormLabel>Que tipo de cuenta querés?</FormLabel>
-              <Select
-                name='accountType'
-                value={values.accountType}
-                placeholder='Seleccioná tipo de Cuenta'
-                onBlur={handleBlur}
-                onChange={handleChange}>
-                <option value='individual'>Individual</option>
-                <option value='business'>Business</option>
-              </Select>
-              <FormHelperText>
-                El tipo de cuenta depende de que necesitas
-              </FormHelperText>
-              <FormErrorMessage>{errors.accountType}</FormErrorMessage>
-            </FormControl>
-            <Button type='submit'>Guardar</Button>
+            <SaveButton
+              icon={rightArrow}
+              title='Guardar'
+              bgColor='bg-primary-mpago700'
+              type='submit'
+            />
           </form>
         )}
       </Formik>
       <Text>{message}</Text>
-    </>
+    </div>
   );
 };
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  console.log(session);
   if (!session) {
     return {
       redirect: {

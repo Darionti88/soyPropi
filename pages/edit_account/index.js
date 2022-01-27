@@ -15,16 +15,14 @@ import {
   VStack,
   Center,
 } from "@chakra-ui/react";
-import {
-  ArrowForwardIcon,
-  ArrowBackIcon,
-  DownloadIcon,
-} from "@chakra-ui/icons";
 import dbConnect from "../../lib/mongodb";
+import rightArrow from "../../assets/svgIcons/rightArrow.svg";
 import User from "../../models/User";
 import axios from "axios";
 import QRCode from "qrcode";
-import QRcodeImage from "../../components/QRcode";
+import QrCodeViewer from "../../components/QrCode/QrCodeViewer";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import SaveButton from "../../components/Buttons/SaveButton";
 
 function EditProfile({ data }) {
   const [newProfileName, setNewProfileName] = useState(data.profileName);
@@ -66,15 +64,17 @@ function EditProfile({ data }) {
   };
 
   return (
-    <div className='container mx-auto p-10 h-screen items-center justify-center flex-col'>
+    <div
+      className='container mx-auto w-5/6 md:w-1/2 flex flex-col items-center 
+    justify-center space-y-10'>
       {!imageUrl ? (
         <>
-          <h1 className='text-4xl mb-10'>
-            Hola {data.name}. Acá podes editar tu perfil
+          <h1 className='text-3xl sm:text-5xl font-hindi font-bold sm:mt-5'>
+            Edita tu Cuenta
           </h1>
           <FormControl id='profileName' mb={20}>
             <FormLabel>Nombre de Perfil</FormLabel>
-            <HStack>
+            <div className='flex flex-col md:flex-row space-y-3 md:space-x-3 items-baseline'>
               <InputGroup size='lg'>
                 <InputLeftAddon>/</InputLeftAddon>
                 <Input
@@ -87,77 +87,48 @@ function EditProfile({ data }) {
                   onChange={(e) => setNewProfileName(e.target.value)}
                 />
               </InputGroup>
-              <Button
+              <SaveButton
                 onClick={handleSubmitProfileName}
-                rightIcon={<ArrowForwardIcon />}
-                colorScheme='teal'
-                size='lg'
-                variant='solid'>
-                Guardar
-              </Button>
-            </HStack>
-
+                bgColor='bg-primary-mpago700'
+                title='Guardar'
+                icon={rightArrow}
+                width='sm:w-2/4 w-full'
+              />
+            </div>
             <FormHelperText>
               Podes cambiar tu Nombre de Perfil siempre y cuando no esté en uso
             </FormHelperText>
           </FormControl>
-          <ButtonGroup>
-            <VStack>
-              <Link
-                href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${data._id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
-                passHref>
-                <Button
-                  rightIcon={<ArrowForwardIcon />}
-                  colorScheme='telegram'
-                  size='lg'
-                  width={300}
-                  variant='solid'>
-                  Enlaza tu cuenta de MP
-                </Button>
-              </Link>
+          <div className='flex flex-col justify-center items-center md:justify-start space-y-5 w-full'>
+            <Link
+              href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${data._id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
+              passHref>
               <Button
                 rightIcon={<ArrowForwardIcon />}
-                colorScheme='messenger'
+                colorScheme='telegram'
                 size='lg'
                 width={300}
-                variant='solid'
-                onClick={generateQr}>
-                Generar mi código QR
+                variant='solid'>
+                Enlaza tu cuenta de MP
               </Button>
-            </VStack>
-          </ButtonGroup>
+            </Link>
+            <Button
+              rightIcon={<ArrowForwardIcon />}
+              colorScheme='messenger'
+              size='lg'
+              width={300}
+              variant='solid'
+              onClick={generateQr}>
+              Generar mi código QR
+            </Button>
+          </div>
         </>
       ) : (
-        <Center w='full'>
-          <VStack>
-            <HStack
-              alignItems='center'
-              justifyContent='center'
-              w='80%'
-              spacing='10'
-              mb='5%'>
-              <Button
-                leftIcon={<ArrowBackIcon />}
-                colorScheme='messenger'
-                size='lg'
-                width={300}
-                variant='solid'
-                onClick={() => setImageUrl("")}>
-                Volver
-              </Button>
-              <Button
-                leftIcon={<DownloadIcon />}
-                colorScheme='messenger'
-                size='lg'
-                width={300}
-                variant='solid'
-                onClick={handleSaveQrCode}>
-                Guardar
-              </Button>
-            </HStack>
-            <QRcodeImage imageUrl={imageUrl} />
-          </VStack>
-        </Center>
+        <QrCodeViewer
+          handleSaveQrCode={handleSaveQrCode}
+          imageUrl={imageUrl}
+          setImageUrl={setImageUrl}
+        />
       )}
     </div>
   );

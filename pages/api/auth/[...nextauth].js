@@ -30,9 +30,7 @@ export default NextAuth({
       }
       return token;
     },
-    async redirect({ url, baseUrl }) {
-      return "/edit_account";
-    },
+
     async session(session, token) {
       session.user.name = token.name;
       session.user.id = token.id;

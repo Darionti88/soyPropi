@@ -6,8 +6,8 @@ const QRcode = ({ imageUrl }) => {
     <Image
       src={imageUrl}
       alt='qrCode'
-      height={550}
-      width={550}
+      height={400}
+      width={400}
       layout='intrinsic'
     />
   );
