@@ -15,7 +15,7 @@ export default NextAuth({
   ],
   database: process.env.MONGODB_URI,
   session: {
-    strategy: "jwt",
+    jwt: true,
   },
   jwt: {
     secret: "dsjkbnfldsñ",

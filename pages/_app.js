@@ -1,17 +1,17 @@
 import "tailwindcss/tailwind.css";
 import "../styles/globals.css";
 import "../styles/navbar.styles.css";
-import { SessionProvider } from "next-auth/react";
+import { Provider } from "next-auth/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider>
-      <SessionProvider session={session} refetchInterval={5 * 60}>
+      <Provider session={pageProps.session}>
         <Navbar />
         <Component {...pageProps} />
-      </SessionProvider>
+      </Provider>
     </ChakraProvider>
   );
 }
