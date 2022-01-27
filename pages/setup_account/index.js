@@ -9,7 +9,7 @@ import {
   Text,
   Select,
 } from "@chakra-ui/react";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
