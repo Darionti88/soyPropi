@@ -13,7 +13,7 @@
     "@chakra-ui/react": "^1.6.9",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
-    "axios": "^0.24.0",
+    "axios": "^0.25.0",
     "follow-redirects": "^1.14.7",
     "formik": "^2.2.9",
     "framer-motion": "^4.1.17",
@@ -38,6 +38,6 @@
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
     "postcss": "^8.3.9",
-    "tailwindcss": "^2.2.16"
+    "tailwindcss": "^3.0.18"
   }
 }
