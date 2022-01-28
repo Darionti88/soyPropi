@@ -1,8 +1,8 @@
-import React from "react";
+import { FC } from "react";
 import Image from "next/image";
 import HotImage from "../assets/images/delivery.svg";
 
-const HowItWorks = () => {
+const HowItWorks: FC = () => {
   return (
     <div className='flex md:flex-row-reverse flex-col-reverse md:w-4/6 w-5/6 space-y-5'>
       <div className='block  w-full'>
