@@ -14,6 +14,7 @@ The paying flow already works. Still have to make the downloadable PDF with QR c
 
 - Migrate to Typescript (now that i feel more comfortable)
 - Migrate DB to PlanetScale & Prisma (mainly for scalability and free tier is better)
+- Slowly remove ChakraUI (not really using it, i'm loving tailwind)
 - Keep improving UI
 - Add Unit Tests with Jest and e2e with Cypress
 
