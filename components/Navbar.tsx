@@ -1,10 +1,9 @@
 import React from "react";
 import { useSession, signOut } from "next-auth/client";
 import Link from "next/link";
-import { Button } from "@chakra-ui/button";
 import { useRouter } from "next/router";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const [session] = useSession();
   const router = useRouter();
 
@@ -20,8 +19,8 @@ const Navbar = () => {
       <ul className='flex flex-1 items-center space-x-3 md:space-x-20 justify-end text-2xl md:pr-10'>
         {session && (
           <li>
-            <Link href='/edit_account' className='font-bold  '>
-              Profile
+            <Link href='/edit_account' passHref>
+              <strong> Profile</strong>
             </Link>
           </li>
         )}

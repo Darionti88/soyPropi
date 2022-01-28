@@ -1,11 +1,7 @@
-import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-
 import HotImage from "../assets/images/mobilePay.svg";
-import { Button } from "@chakra-ui/button";
 
-const HotActionButton = () => {
+const HotActionButton: React.FC = () => {
   return (
     <div className='flex md:flex-row-reverse flex-col-reverse w-5/6 md:w-4/6 space-y-5'>
       <div className='block  w-full'>
