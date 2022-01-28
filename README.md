@@ -7,6 +7,17 @@ When you create an account you can link your Mercado Pago account and the tips w
 
 The checkout process is handled by Mercado Pago so it is secure and you have nothing to worry about.
 
+PROGRESS OF PROJECT
+The paying flow already works. Still have to make the downloadable PDF with QR code.
+
+🏁 NEXT GOALS 🏁
+
+- Migrate to Typescript (now that i feel more comfortable)
+- Migrate DB to PlanetScale & Prisma (mainly for scalability and free tier is better)
+- Keep improving UI
+- Add Unit Tests with Jest and e2e with Cypress
+
+
 !----------------------------------------------------------- S P A N I S H ------------------------------------------------------
 
 Propi es una Plataforma que busca facilitar el proceso de recibir propina para Repartidores, Meseros o cualquier persona que pueda aceptar propinas.💵
