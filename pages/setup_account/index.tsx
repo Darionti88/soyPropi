@@ -4,20 +4,20 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
-  Button,
   Text,
 } from "@chakra-ui/react";
-import { getSession } from "next-auth/client";
+import { getSession, GetSessionOptions } from "next-auth/client";
 import { Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import User from "../../models/User";
 import rightArrow from "../../assets/svgIcons/rightArrow.svg";
 import SaveButton from "../../components/Buttons/SaveButton";
+import { GetServerSideProps } from "next";
+import { SessionUser } from "../../types/types";
 
 const CreateProfileName = ({ user }) => {
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState("");
   const router = useRouter();
 
   const profileSchema = Yup.object().shape({
@@ -39,6 +39,7 @@ const CreateProfileName = ({ user }) => {
         initialValues={{ profileName: "", accountType: "individual" }}
         validationSchema={profileSchema}
         onSubmit={async (values, { resetForm }) => {
+          if (values.profileName.length < 3) alert("Nombre muy corto");
           try {
             await axios.put(`/api/users/${user.id}`, {
               ...values,
@@ -68,7 +69,7 @@ const CreateProfileName = ({ user }) => {
             <FormControl
               id='profileName'
               isRequired
-              isInvalid={touched.profileName && errors.profileName}>
+              isInvalid={Boolean(touched.profileName && errors.profileName)}>
               <FormLabel>
                 Hola {user.name} Elegí el nombre de tu perfil
               </FormLabel>
@@ -99,8 +100,11 @@ const CreateProfileName = ({ user }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetSessionOptions
+) => {
   const session = await getSession(context);
+  const user: SessionUser = session.user;
   if (!session) {
     return {
       redirect: {
@@ -111,9 +115,9 @@ export async function getServerSideProps(context) {
   }
   return {
     props: {
-      user: session.user,
+      user,
     },
   };
-}
+};
 
 export default CreateProfileName;

@@ -3,7 +3,7 @@ export type ButtonProps = {
   type?: any;
   title: string;
   bgColor: string;
-  width: string;
+  width?: string;
   icon: string;
 };
 
