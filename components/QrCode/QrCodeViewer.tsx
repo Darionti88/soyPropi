@@ -2,8 +2,13 @@ import React from "react";
 import QRcode from "./QRcode";
 import { ArrowBackIcon, DownloadIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
+import { QRProps } from "../../types/types";
 
-const QrCodeViewer = ({ setImageUrl, imageUrl, handleSaveQrCode }) => (
+const QrCodeViewer: React.FC<QRProps> = ({
+  setImageUrl,
+  imageUrl,
+  handleSaveQrCode,
+}) => (
   <div className='flex flex-col w-full jusify-center items-center'>
     <div className='flex flex-row space-x-10 py-10 w-full'>
       <Button
