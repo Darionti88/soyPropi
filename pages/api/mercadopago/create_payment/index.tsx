@@ -1,7 +1,9 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 /* eslint-disable import/no-anonymous-default-export */
 import mercadopago from "mercadopago";
+import { CreatePreferencePayload } from "mercadopago/models/preferences/create-payload.model";
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { method, body } = req;
 
   mercadopago.configure({
@@ -9,13 +11,13 @@ export default async (req, res) => {
   });
   switch (method) {
     case "POST":
-      let preference = {
+      let preference: CreatePreferencePayload = {
         items: [
           {
             title: body.description,
             unit_price: parseFloat(body.price),
             quantity: Number(body.quantity),
-            currency_id: "$",
+            currency_id: "ARS",
           },
         ],
         statement_descriptor: body.description,
