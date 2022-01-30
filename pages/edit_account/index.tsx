@@ -19,9 +19,9 @@ import QrCodeViewer from "../../components/QrCode/QrCodeViewer";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import SaveButton from "../../components/Buttons/SaveButton";
 import { GetServerSideProps } from "next";
-import { FullUser, SessionUser } from "../../types/types";
+import { MercadoPagoUser, SessionUser } from "../../types/types";
 
-function EditProfile({ user }) {
+function EditProfile({ user }: { user: MercadoPagoUser }) {
   const [newProfileName, setNewProfileName] = useState(user.profileName);
   const [imageUrl, setImageUrl] = useState<string>();
 
@@ -146,7 +146,7 @@ export const getServerSideProps: GetServerSideProps = async (
   } else {
     const currentUser: SessionUser = session.user;
     const singleUser = await User.findOne({ _id: currentUser.id });
-    const user: FullUser = JSON.parse(JSON.stringify(singleUser));
+    const user: MercadoPagoUser = JSON.parse(JSON.stringify(singleUser));
     if (!singleUser?.profileName) {
       return {
         redirect: {

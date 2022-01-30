@@ -16,7 +16,7 @@ import SaveButton from "../../components/Buttons/SaveButton";
 import { GetServerSideProps } from "next";
 import { SessionUser } from "../../types/types";
 
-const CreateProfileName = ({ user }) => {
+const CreateProfileName = ({ user }: { user: SessionUser }) => {
   const [message, setMessage] = useState("");
   const router = useRouter();
 

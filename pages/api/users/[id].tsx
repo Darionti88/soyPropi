@@ -1,7 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+
 import dbConnect from "../../../lib/mongodb";
 import User from "../../../models/User";
+import { MercadoPagoUser } from "../../../types/types";
 // eslint-disable-next-line import/no-anonymous-default-export
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     method,
     body,
@@ -13,7 +16,7 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const singleUser = await User.findOne({ _id: id });
+        const singleUser: MercadoPagoUser = await User.findOne({ _id: id });
         res.status(200).json({ success: true, data: singleUser });
       } catch (error) {
         res.status(400).json({ success: false });
@@ -21,10 +24,14 @@ export default async (req, res) => {
       break;
     case "PUT":
       try {
-        const myUser = await User.findByIdAndUpdate({ _id: id }, body, {
-          new: true,
-          strict: false,
-        });
+        const myUser: MercadoPagoUser = await User.findByIdAndUpdate(
+          { _id: id },
+          body,
+          {
+            new: true,
+            strict: false,
+          }
+        );
         return res.status(200).json({ success: true, data: myUser });
       } catch (error) {
         res.status(400).json({ success: false, msg: "User not Found" });

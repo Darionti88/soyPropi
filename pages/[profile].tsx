@@ -19,15 +19,14 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { GetSessionOptions } from "next-auth/client";
-import { FullUser } from "../types/types";
+import { MercadoPagoUser } from "../types/types";
 
-function Profile({ user }) {
+function Profile({ user }: { user: MercadoPagoUser }) {
   const [total, setTotal] = useState<number>(null);
   const [custom, setCustom] = useState<number>(null);
   const [price, setPrice] = useState(null);
   const [orderData, setOrderData] = useState({
-    userAccessToken:
-      "APP_USR-1678221936079962-123114-e22472427bf9483149902a0a0c799271-1048752270", //Deshardcodear
+    userAccessToken: user.access_token, //Deshardcodear
     description: `Propina para ${user?.profileName}`,
     quantity: 1,
   });
@@ -134,22 +133,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
   await dbConnect();
   const profileName = context.params.profile;
   const singleUser = await User.findOne({ profileName: profileName });
+  console.log(singleUser);
   if (!singleUser) {
     return { notFound: true };
   }
-  const user: FullUser = JSON.parse(JSON.stringify(singleUser));
+  const user: MercadoPagoUser = JSON.parse(JSON.stringify(singleUser));
   return {
     props: { user },
   };
 };
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const res = await axios.get("http://localhost:3000/api/users");
   const users = res.data.data;
   const paths = users.map((user) => ({
     params: { profile: user.name },
   }));
   return { paths, fallback: "blocking" };
-}
+};
 
 export default Profile;

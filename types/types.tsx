@@ -20,7 +20,19 @@ export type SessionUser = {
   id?: string;
 };
 
-export type FullUser = {
+// export type FullUser = {
+//   _id: string;
+//   name: string;
+//   email: string;
+//   image: string;
+//   emailVerified: null;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   accountType: string;
+//   profileName: string;
+// };
+
+export type MercadoPagoUser = {
   _id: string;
   name: string;
   email: string;
@@ -30,4 +42,12 @@ export type FullUser = {
   updatedAt: Date;
   accountType: string;
   profileName: string;
+  access_token: string;
+  expires_in: number;
+  live_mode: boolean;
+  public_key: string;
+  refresh_token: string;
+  scope: string;
+  token_type: string;
+  user_id: number;
 };
