@@ -1,7 +1,15 @@
 import React from "react";
 import Image from "next/image";
+import { ButtonProps } from "../../types/types";
 
-const SaveButton = ({ onClick, type, icon, title, bgColor, width }) => {
+const SaveButton: React.FC<ButtonProps> = ({
+  onClick,
+  type,
+  icon,
+  title,
+  bgColor,
+  width,
+}) => {
   return (
     <button
       type={type && type}

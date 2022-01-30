@@ -1,19 +1,14 @@
 import { useState } from "react";
-import { getSession } from "next-auth/client";
+import { getSession, GetSessionOptions } from "next-auth/client";
 import Link from "next/link";
 import {
   Input,
   FormControl,
   FormLabel,
-  FormErrorMessage,
   FormHelperText,
   InputLeftAddon,
   InputGroup,
   Button,
-  ButtonGroup,
-  HStack,
-  VStack,
-  Center,
 } from "@chakra-ui/react";
 import dbConnect from "../../lib/mongodb";
 import rightArrow from "../../assets/svgIcons/rightArrow.svg";
@@ -23,13 +18,15 @@ import QRCode from "qrcode";
 import QrCodeViewer from "../../components/QrCode/QrCodeViewer";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import SaveButton from "../../components/Buttons/SaveButton";
+import { GetServerSideProps } from "next";
+import { FullUser, SessionUser } from "../../types/types";
 
-function EditProfile({ data }) {
-  const [newProfileName, setNewProfileName] = useState(data.profileName);
-  const [imageUrl, setImageUrl] = useState("");
+function EditProfile({ user }) {
+  const [newProfileName, setNewProfileName] = useState(user.profileName);
+  const [imageUrl, setImageUrl] = useState<string>();
 
   const handleSubmitProfileName = async () => {
-    const response = await axios.put(`/api/users/${data._id}`, {
+    const response = await axios.put(`/api/users/${user._id}`, {
       profileName: newProfileName,
     });
     alert("Nombre de Perfil Actualizado");
@@ -37,7 +34,7 @@ function EditProfile({ data }) {
 
   const generateQr = async () => {
     const baseUrl = window.location.origin;
-    const userProfileQrLink = `${baseUrl}/${data.profileName}`;
+    const userProfileQrLink = `${baseUrl}/${newProfileName}`;
     try {
       const qrSource = await QRCode.toDataURL(userProfileQrLink);
       setImageUrl(qrSource);
@@ -48,7 +45,7 @@ function EditProfile({ data }) {
 
   const handleSaveQrCode = () => {
     QRCode.toFile(
-      `${data.profileName}`
+      `${user.profileName}`
       // {
       //   type: "png",
       //   color: {
@@ -82,7 +79,7 @@ function EditProfile({ data }) {
                   size='lg'
                   type='text'
                   value={newProfileName}
-                  placeholder={data.profileName}
+                  placeholder={user.profileName}
                   backgroundColor='#FFF'
                   onChange={(e) => setNewProfileName(e.target.value)}
                 />
@@ -101,7 +98,7 @@ function EditProfile({ data }) {
           </FormControl>
           <div className='flex flex-col justify-center items-center md:justify-start space-y-5 w-full'>
             <Link
-              href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${data._id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
+              href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${user._id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
               passHref>
               <Button
                 rightIcon={<ArrowForwardIcon />}
@@ -134,10 +131,11 @@ function EditProfile({ data }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const connected = await dbConnect();
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetSessionOptions
+) => {
+  await dbConnect();
   const session = await getSession(context);
-
   if (!session) {
     return {
       redirect: {
@@ -146,8 +144,9 @@ export async function getServerSideProps(context) {
       },
     };
   } else {
-    const singleUser = await User.findOne({ _id: session.user.id });
-    const user = JSON.parse(JSON.stringify(singleUser));
+    const currentUser: SessionUser = session.user;
+    const singleUser = await User.findOne({ _id: currentUser.id });
+    const user: FullUser = JSON.parse(JSON.stringify(singleUser));
     if (!singleUser?.profileName) {
       return {
         redirect: {
@@ -158,11 +157,11 @@ export async function getServerSideProps(context) {
     } else {
       return {
         props: {
-          data: user,
+          user,
         },
       };
     }
   }
-}
+};
 
 export default EditProfile;

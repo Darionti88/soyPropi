@@ -1,7 +1,7 @@
-import React from "react";
 import Image from "next/image";
+import { QRProps } from "../../types/types";
 
-const QRcode = ({ imageUrl }) => {
+const QRcode: React.FC<QRProps> = ({ imageUrl }) => {
   return (
     <Image
       src={imageUrl}
