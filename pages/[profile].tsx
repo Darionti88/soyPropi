@@ -1,18 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { GetStaticProps, GetStaticPaths } from "next";
 
 import axios from "axios";
 import User from "../models/User";
 import dbConnect from "../lib/mongodb";
 import Image from "next/image";
-import Link from "next/link";
 
 import { createPreference } from "../lib/mercadopago";
 import {
   Input,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   InputLeftAddon,
   InputGroup,
   Button,
@@ -20,19 +18,21 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
+import { GetSessionOptions } from "next-auth/client";
+import { FullUser } from "../types/types";
 
-function Profile({ data }) {
-  const [total, setTotal] = useState("");
-  const [custom, setCustom] = useState("");
+function Profile({ user }) {
+  const [total, setTotal] = useState<number>(null);
+  const [custom, setCustom] = useState<number>(null);
   const [price, setPrice] = useState(null);
   const [orderData, setOrderData] = useState({
     userAccessToken:
       "APP_USR-1678221936079962-123114-e22472427bf9483149902a0a0c799271-1048752270", //Deshardcodear
-    description: `Propina para ${data.profileName}`,
+    description: `Propina para ${user?.profileName}`,
     quantity: 1,
   });
 
-  const calculateTip = (percentage, value) => {
+  const calculateTip = (percentage: number, value: number) => {
     const totalTip = (value * percentage) / 100;
     return totalTip;
   };
@@ -47,11 +47,11 @@ function Profile({ data }) {
 
   return (
     <>
-      <div className='container mx-auto  h-screen items-center flex justify-center flex-col'>
+      <div className='container mx-auto h-screen items-center flex justify-center flex-col'>
         <div className='block h-300 mb-10'>
           <Image
             className='rounded-full'
-            src={data.image}
+            src={user.image}
             width={200}
             height={200}
             alt='userAvatar'
@@ -59,7 +59,7 @@ function Profile({ data }) {
           />
         </div>
         <h1 className='text-4xl mb-10'>
-          Gracias por darle propina a {data.profileName}
+          Gracias por darle propina a {user.profileName}
         </h1>
         <FormControl id='profileName' mb={20} w='20%'>
           <FormLabel>Total de la Cuenta</FormLabel>
@@ -73,7 +73,7 @@ function Profile({ data }) {
                 placeholder='1500'
                 value={total}
                 backgroundColor='#FFF'
-                onChange={(e) => setTotal(e.target.value)}
+                onChange={(e) => setTotal(Number(e.target.value))}
               />
             </InputGroup>
           </HStack>
@@ -87,12 +87,12 @@ function Profile({ data }) {
                 placeholder='120'
                 value={custom}
                 backgroundColor='#FFF'
-                onChange={(e) => setCustom(e.target.value)}
+                onChange={(e) => setCustom(Number(e.target.value))}
               />
             </InputGroup>
           </HStack>
         </FormControl>
-        <ButtonGroup>
+        <ButtonGroup className='pb-8'>
           <VStack>
             <Button
               onClick={() => startCheckout(calculateTip(10, total))}
@@ -130,18 +130,18 @@ function Profile({ data }) {
   );
 }
 
-export async function getStaticProps(context) {
+export const getStaticProps: GetStaticProps = async (context) => {
   await dbConnect();
   const profileName = context.params.profile;
   const singleUser = await User.findOne({ profileName: profileName });
   if (!singleUser) {
     return { notFound: true };
   }
-  const user = JSON.parse(JSON.stringify(singleUser));
+  const user: FullUser = JSON.parse(JSON.stringify(singleUser));
   return {
-    props: { data: user },
+    props: { user },
   };
-}
+};
 
 export async function getStaticPaths() {
   const res = await axios.get("http://localhost:3000/api/users");

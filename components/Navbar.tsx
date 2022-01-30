@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
 
   return (
-    <nav className='flex justify-between items-center sm:px-10 px-3 py-3 sticky z-50 top-0 md:mb-5'>
+    <nav className='flex justify-between items-center sm:px-10 px-3 py-3 z-50 top-0 md:mb-5'>
       <div className=''>
         <Link href='/'>
           <a className=' bg-primary-green px-3 py-1 text-4xl font-bold border-2 border-text font-metro'>
