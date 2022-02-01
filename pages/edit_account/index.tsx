@@ -10,23 +10,24 @@ import {
   InputGroup,
   Button,
 } from "@chakra-ui/react";
-import dbConnect from "../../lib/mongodb";
 import rightArrow from "../../assets/svgIcons/rightArrow.svg";
-import User from "../../models/User";
+// import User from "../../models/User";
+import { User } from "@prisma/client";
+import prisma from "../../lib/prisma";
 import axios from "axios";
 import QRCode from "qrcode";
 import QrCodeViewer from "../../components/QrCode/QrCodeViewer";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import SaveButton from "../../components/Buttons/SaveButton";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { MercadoPagoUser, SessionUser } from "../../types/types";
+import { SessionUser } from "../../types/types";
 
-function EditProfile({ user }: { user: MercadoPagoUser }) {
+function EditProfile({ user }: { user: User }) {
   const [newProfileName, setNewProfileName] = useState(user.profileName);
   const [imageUrl, setImageUrl] = useState<string>();
 
   const handleSubmitProfileName = async () => {
-    const response = await axios.put(`/api/users/${user._id}`, {
+    const response = await axios.put(`/api/users/${user.id}`, {
       profileName: newProfileName,
     });
     alert("Nombre de Perfil Actualizado");
@@ -134,7 +135,6 @@ function EditProfile({ user }: { user: MercadoPagoUser }) {
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  await dbConnect();
   const session = await getSession(context);
   if (!session) {
     return {
@@ -145,8 +145,11 @@ export const getServerSideProps: GetServerSideProps = async (
     };
   } else {
     const currentUser: SessionUser = session.user;
-    const singleUser = await User.findOne({ _id: currentUser.id });
-    const user: MercadoPagoUser = JSON.parse(JSON.stringify(singleUser));
+    const singleUser: User = await prisma.user.findUnique({
+      where: { id: currentUser.id },
+    });
+    const user: User = JSON.parse(JSON.stringify(singleUser));
+    console.log(user);
     if (!singleUser?.profileName) {
       return {
         redirect: {
