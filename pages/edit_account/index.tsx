@@ -99,7 +99,7 @@ function EditProfile({ user }: { user: User }) {
           </FormControl>
           <div className='flex flex-col justify-center items-center md:justify-start space-y-5 w-full'>
             <Link
-              href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${user._id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
+              href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${user.id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
               passHref>
               <Button
                 rightIcon={<ArrowForwardIcon />}
