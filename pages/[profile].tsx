@@ -18,7 +18,6 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import { GetSessionOptions } from "next-auth/client";
 import { MercadoPagoUser } from "../types/types";
 
 function Profile({ user }: { user: MercadoPagoUser }) {

@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
+  planetScaleMode      = true
+  referentialIntegrity = "prisma"
+}
+
+model Account {
+  id                 String  @id @default(uuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String       @id @unique @default(uuid())
+  name          String
+  email         String       @unique
+  image         String
+  emailVerified Boolean?
+  accountType   String?
+  profileName   String?      @unique
+  accounts      Account[]
+  sessions      Session[]
+  mercadopago   Mercadopago?
+
+}
+
+model Mercadopago {
+  user_id       Int     @id
+  access_token  String
+  expires_in    Int
+  live_mode     Boolean
+  public_key    String
+  refresh_token String
+  scope         String
+  token_type    String
+  userPropi     User    @relation(fields: [userPropiId], references: [id], onUpdate: NoAction)
+  userPropiId   String  @unique
+
+
+
+  @@index([userPropiId])
+  @@map("mercadopago")
+}

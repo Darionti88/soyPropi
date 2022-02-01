@@ -6,17 +6,18 @@ import {
   FormHelperText,
   Text,
 } from "@chakra-ui/react";
-import { getSession, GetSessionOptions } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { Formik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import rightArrow from "../../assets/svgIcons/rightArrow.svg";
 import SaveButton from "../../components/Buttons/SaveButton";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { SessionUser } from "../../types/types";
+import { User } from "@prisma/client";
 
-const CreateProfileName = ({ user }: { user: SessionUser }) => {
+const CreateProfileName = ({ user }: { user: User }) => {
   const [message, setMessage] = useState("");
   const router = useRouter();
 
@@ -101,10 +102,10 @@ const CreateProfileName = ({ user }: { user: SessionUser }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (
-  context: GetSessionOptions
+  context: GetServerSidePropsContext
 ) => {
   const session = await getSession(context);
-  const user: SessionUser = session.user;
+  const user = session.user;
   if (!session) {
     return {
       redirect: {
