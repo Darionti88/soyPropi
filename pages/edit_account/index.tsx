@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getSession, GetSessionOptions } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import Link from "next/link";
 import {
   Input,
@@ -18,7 +18,7 @@ import QRCode from "qrcode";
 import QrCodeViewer from "../../components/QrCode/QrCodeViewer";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import SaveButton from "../../components/Buttons/SaveButton";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { MercadoPagoUser, SessionUser } from "../../types/types";
 
 function EditProfile({ user }: { user: MercadoPagoUser }) {
@@ -132,7 +132,7 @@ function EditProfile({ user }: { user: MercadoPagoUser }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (
-  context: GetSessionOptions
+  context: GetServerSidePropsContext
 ) => {
   await dbConnect();
   const session = await getSession(context);

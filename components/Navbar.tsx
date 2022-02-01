@@ -1,10 +1,10 @@
 import React from "react";
-import { useSession, signOut } from "next-auth/client";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Navbar: React.FC = () => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   return (
