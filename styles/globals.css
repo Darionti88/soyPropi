@@ -43,3 +43,25 @@ body {
 .cssbuttons-io-button:active .icon {
   transform: scale(0.95);
 }
+
+.signin_card {
+  box-shadow: 12px 12px 2px 1px rgba(0, 138, 214, 0.2);
+}
+
+.social_button:hover .svg-wrapper {
+  animation: fly-1 0.9s ease-in-out infinite alternate;
+}
+
+.social_button:hover p {
+  animation: fly-1 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.1em);
+  }
+
+  to {
+    transform: translateY(-0.1em);
+  }
+}
