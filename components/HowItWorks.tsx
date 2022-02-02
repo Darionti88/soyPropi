@@ -4,7 +4,7 @@ import HotImage from "../assets/images/delivery.svg";
 
 const HowItWorks: FC = () => {
   return (
-    <div className='flex md:flex-row-reverse flex-col-reverse md:w-4/6 w-5/6 space-y-5'>
+    <div className='flex md:flex-row space-x-8 flex-col-reverse md:w-4/6 w-5/6 space-y-5'>
       <div className='block  w-full'>
         <Image
           src={HotImage}

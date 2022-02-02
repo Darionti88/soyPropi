@@ -5,6 +5,7 @@ export type ButtonProps = {
   bgColor: string;
   width?: string;
   icon: string;
+  text?: string;
 };
 
 export type QRProps = {
@@ -18,36 +19,4 @@ export type SessionUser = {
   email?: string;
   image?: string;
   id?: string;
-};
-
-// export type FullUser = {
-//   _id: string;
-//   name: string;
-//   email: string;
-//   image: string;
-//   emailVerified: null;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   accountType: string;
-//   profileName: string;
-// };
-
-export type MercadoPagoUser = {
-  _id: string;
-  name: string;
-  email: string;
-  image: string;
-  emailVerified: null;
-  createdAt: Date;
-  updatedAt: Date;
-  accountType: string;
-  profileName: string;
-  access_token: string;
-  expires_in: number;
-  live_mode: boolean;
-  public_key: string;
-  refresh_token: string;
-  scope: string;
-  token_type: string;
-  user_id: number;
 };

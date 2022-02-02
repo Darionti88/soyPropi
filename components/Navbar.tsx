@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
           <li>
             <Link href='/signin' passHref>
               <button className='button_signin'>
-                <span className='button_top text-lg'> Sign In</span>
+                <span className='button_top text-lg'> Ingresar </span>
               </button>
             </Link>
           </li>
@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
             <button
               className='rounded-md p-3 text-gray-50  bg-primary-mpago700'
               onClick={() => signOut()}>
-              <span className='font-hindi font-bold text-lg'> Sign Out</span>
+              <span className='font-hindi font-bold text-lg'> Salir </span>
             </button>
           </li>
         )}
