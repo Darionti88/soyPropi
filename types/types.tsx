@@ -12,6 +12,7 @@ export type QRProps = {
   imageUrl: string;
   setImageUrl?: (imageUrl: string) => void;
   handleSaveQrCode?: () => void;
+  profileName?: string;
 };
 
 export type SessionUser = {

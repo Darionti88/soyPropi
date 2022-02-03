@@ -10,6 +10,7 @@ import {
   InputGroup,
   Button,
 } from "@chakra-ui/react";
+
 import rightArrow from "../../assets/svgIcons/rightArrow.svg";
 // import User from "../../models/User";
 import { User } from "@prisma/client";
@@ -44,26 +45,9 @@ function EditProfile({ user }: { user: User }) {
     }
   };
 
-  const handleSaveQrCode = () => {
-    QRCode.toFile(
-      `${user.profileName}`
-      // {
-      //   type: "png",
-      //   color: {
-      //     dark: "#333", // Blue dots
-      //     light: "#0000", // Transparent background
-      //   },
-      // },
-      // function (err) {
-      //   if (err) throw err;
-      //   console.log("done");
-      // }
-    );
-  };
-
   return (
     <div
-      className='container mx-auto w-5/6 md:w-1/2 flex flex-col items-center 
+      className='container mx-auto w-5/6 md:w-2/3 flex flex-col items-center 
     justify-center space-y-10'>
       {!imageUrl ? (
         <>
@@ -123,9 +107,9 @@ function EditProfile({ user }: { user: User }) {
         </>
       ) : (
         <QrCodeViewer
-          handleSaveQrCode={handleSaveQrCode}
           imageUrl={imageUrl}
           setImageUrl={setImageUrl}
+          profileName={newProfileName}
         />
       )}
     </div>

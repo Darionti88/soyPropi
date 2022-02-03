@@ -16,11 +16,11 @@ const Navbar: React.FC = () => {
           </a>
         </Link>
       </div>
-      <ul className='flex flex-1 items-center space-x-3 md:space-x-20 justify-end text-2xl md:pr-10'>
+      <ul className='flex flex-1 items-center space-x-3 md:space-x-20 justify-end text-2xl md:pr-10 '>
         {session && (
           <li>
             <Link href='/edit_account' passHref>
-              <strong> Profile</strong>
+              <strong className='hover:cursor-pointer'> Profile</strong>
             </Link>
           </li>
         )}
