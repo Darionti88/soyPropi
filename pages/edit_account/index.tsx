@@ -91,7 +91,9 @@ function EditProfile({ user }: { user: User }) {
                 size='lg'
                 width={300}
                 variant='solid'>
-                Enlaza tu cuenta de MP
+                {user.mercadopago?.user_id
+                  ? "Cuenta ya enlazada"
+                  : "Enlaza tu cuenta de MP"}
               </Button>
             </Link>
             <Button
@@ -100,7 +102,7 @@ function EditProfile({ user }: { user: User }) {
               size='lg'
               width={300}
               variant='solid'
-              onClick={generateQr}>
+              onClick={user.mercadopago?.user_id ? null : generateQr}>
               Generar mi código QR
             </Button>
           </div>
@@ -131,6 +133,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const currentUser: SessionUser = session.user;
     const singleUser: User = await prisma.user.findUnique({
       where: { id: currentUser.id },
+      include: { mercadopago: true },
     });
     const user: User = JSON.parse(JSON.stringify(singleUser));
     if (!singleUser?.profileName) {

@@ -2,10 +2,9 @@ import { useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 
 import axios from "axios";
-import User from "../models/User";
 import dbConnect from "../lib/mongodb";
 import Image from "next/image";
-
+import prisma from "../lib/prisma";
 import { createPreference } from "../lib/mercadopago";
 import {
   Input,
@@ -18,20 +17,21 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import { MercadoPagoUser } from "../types/types";
+import { User } from "@prisma/client";
 
-function Profile({ user }: { user: MercadoPagoUser }) {
-  const [total, setTotal] = useState<number>(null);
-  const [custom, setCustom] = useState<number>(null);
+function Profile({ user }: { user: User }) {
+  const [total, setTotal] = useState<string>("");
+  const [custom, setCustom] = useState<string>("");
   const [price, setPrice] = useState(null);
   const [orderData, setOrderData] = useState({
-    userAccessToken: user.access_token, //Deshardcodear
+    userAccessToken: user.mercadopago?.access_token, //Deshardcodear
     description: `Propina para ${user?.profileName}`,
     quantity: 1,
   });
+  console.log(user);
 
-  const calculateTip = (percentage: number, value: number) => {
-    const totalTip = (value * percentage) / 100;
+  const calculateTip = (percentage: number, value: string) => {
+    const totalTip = (Number(value) * percentage) / 100;
     return totalTip;
   };
 
@@ -71,7 +71,7 @@ function Profile({ user }: { user: MercadoPagoUser }) {
                 placeholder='1500'
                 value={total}
                 backgroundColor='#FFF'
-                onChange={(e) => setTotal(Number(e.target.value))}
+                onChange={(e) => setTotal(e.target.value)}
               />
             </InputGroup>
           </HStack>
@@ -85,7 +85,7 @@ function Profile({ user }: { user: MercadoPagoUser }) {
                 placeholder='120'
                 value={custom}
                 backgroundColor='#FFF'
-                onChange={(e) => setCustom(Number(e.target.value))}
+                onChange={(e) => setCustom(e.target.value)}
               />
             </InputGroup>
           </HStack>
@@ -131,12 +131,15 @@ function Profile({ user }: { user: MercadoPagoUser }) {
 export const getStaticProps: GetStaticProps = async (context) => {
   await dbConnect();
   const profileName = context.params.profile;
-  const singleUser = await User.findOne({ profileName: profileName });
+  const singleUser = await prisma.user.findUnique({
+    where: { profileName: String(profileName) },
+    include: { mercadopago: true },
+  });
   console.log(singleUser);
   if (!singleUser) {
     return { notFound: true };
   }
-  const user: MercadoPagoUser = JSON.parse(JSON.stringify(singleUser));
+  const user = JSON.parse(JSON.stringify(singleUser));
   return {
     props: { user },
   };
@@ -144,9 +147,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await axios.get("http://localhost:3000/api/users");
-  const users = res.data.data;
+  const users: User[] = res.data.data;
   const paths = users.map((user) => ({
-    params: { profile: user.name },
+    params: { profile: user.profileName },
   }));
   return { paths, fallback: "blocking" };
 };

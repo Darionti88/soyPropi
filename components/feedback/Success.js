@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import SuccessImage from "../../assets/images/feedbackImages/success.svg";
 
 const Success = ({ image, text }) => {
   return (
@@ -14,8 +13,11 @@ const Success = ({ image, text }) => {
           layout='fill'
         />
       </div>
-      <div className='h-min md:h-1/6 w-full md:w-5/6 flex  items-center justify-center'>
+      <div className='h-min md:h-1/6 w-full md:w-5/6 flex flex-col space-y-5  items-center justify-center'>
         <h1 className='text-6xl font-exo2 text-center'>{text}</h1>
+        <h3 className='text-4xl font-exo2 text-center'>
+          En breve serás redirigido...
+        </h3>
       </div>
     </div>
   );
