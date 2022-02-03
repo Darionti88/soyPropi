@@ -26,7 +26,7 @@ const options = {
   //   strategy: "jwt",
   // },
   pages: {
-    newUser: "/",
+    newUser: "/setup_account",
   },
   // ssl: {
   //   rejectUnauthorized: false,

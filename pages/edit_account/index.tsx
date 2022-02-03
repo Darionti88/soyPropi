@@ -133,7 +133,6 @@ export const getServerSideProps: GetServerSideProps = async (
       where: { id: currentUser.id },
     });
     const user: User = JSON.parse(JSON.stringify(singleUser));
-    console.log(user);
     if (!singleUser?.profileName) {
       return {
         redirect: {
