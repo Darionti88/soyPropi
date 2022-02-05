@@ -32,14 +32,22 @@ const Signin = () => {
           className='flex flex-col space-y-5 w-full items-center py-5 h-2/4
         justify-center '>
           <SocialLoginButton
-            onClick={() => signIn("facebook")}
+            onClick={() =>
+              signIn("facebook", {
+                callbackUrl: "http://localhost:3000/edit_account",
+              })
+            }
             title='Facebook'
             bgColor='bg-[#3d5a98]'
             icon={Facebook}
             text='text-white'
           />
           <SocialLoginButton
-            onClick={() => signIn("google")}
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: "http://localhost:3000/edit_account",
+              })
+            }
             title='Google'
             bgColor='bg-[#FFF]'
             icon={Google}
