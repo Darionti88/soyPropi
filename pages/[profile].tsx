@@ -2,10 +2,9 @@ import { useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 
 import axios from "axios";
-import User from "../models/User";
 import dbConnect from "../lib/mongodb";
 import Image from "next/image";
-
+import prisma from "../lib/prisma";
 import { createPreference } from "../lib/mercadopago";
 import {
   Input,
@@ -18,29 +17,26 @@ import {
   HStack,
   VStack,
 } from "@chakra-ui/react";
-import { MercadoPagoUser } from "../types/types";
+import { User } from "@prisma/client";
+import { FullUser } from "../types/types";
 
-function Profile({ user }: { user: MercadoPagoUser }) {
-  const [total, setTotal] = useState<number>(null);
-  const [custom, setCustom] = useState<number>(null);
-  const [price, setPrice] = useState(null);
+function Profile({ user }: { user: FullUser }) {
+  const [total, setTotal] = useState<string>("");
+  const [custom, setCustom] = useState<string>("");
   const [orderData, setOrderData] = useState({
-    userAccessToken: user.access_token, //Deshardcodear
+    userAccessToken: user.mercadopago?.access_token,
     description: `Propina para ${user?.profileName}`,
     quantity: 1,
   });
 
-  const calculateTip = (percentage: number, value: number) => {
-    const totalTip = (value * percentage) / 100;
+  const calculateTip = (percentage: number, value: string) => {
+    const totalTip = (Number(value) * percentage) / 100;
     return totalTip;
   };
 
-  const startCheckout = async (tip) => {
-    setPrice(tip);
+  const startCheckout = async (tip: number) => {
     const response = await createPreference({ ...orderData, price: tip });
-    console.log(response);
     window.location.href = response.data.urlSandbox;
-    console.log(orderData);
   };
 
   return (
@@ -71,7 +67,7 @@ function Profile({ user }: { user: MercadoPagoUser }) {
                 placeholder='1500'
                 value={total}
                 backgroundColor='#FFF'
-                onChange={(e) => setTotal(Number(e.target.value))}
+                onChange={(e) => setTotal(e.target.value)}
               />
             </InputGroup>
           </HStack>
@@ -85,7 +81,7 @@ function Profile({ user }: { user: MercadoPagoUser }) {
                 placeholder='120'
                 value={custom}
                 backgroundColor='#FFF'
-                onChange={(e) => setCustom(Number(e.target.value))}
+                onChange={(e) => setCustom(e.target.value)}
               />
             </InputGroup>
           </HStack>
@@ -101,6 +97,7 @@ function Profile({ user }: { user: MercadoPagoUser }) {
               10%: {total && `$${calculateTip(10, total)}`}
             </Button>
             <Button
+              onClick={() => startCheckout(calculateTip(15, total))}
               colorScheme='messenger'
               size='lg'
               width={300}
@@ -108,6 +105,7 @@ function Profile({ user }: { user: MercadoPagoUser }) {
               15%: {total && `$${calculateTip(15, total)}`}
             </Button>
             <Button
+              onClick={() => startCheckout(calculateTip(20, total))}
               colorScheme='messenger'
               size='lg'
               width={300}
@@ -115,6 +113,7 @@ function Profile({ user }: { user: MercadoPagoUser }) {
               20%: {total && `$${calculateTip(20, total)}`}
             </Button>
             <Button
+              onClick={() => startCheckout(Number(custom))}
               colorScheme='messenger'
               size='lg'
               width={300}
@@ -129,14 +128,15 @@ function Profile({ user }: { user: MercadoPagoUser }) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  await dbConnect();
   const profileName = context.params.profile;
-  const singleUser = await User.findOne({ profileName: profileName });
-  console.log(singleUser);
+  const singleUser = await prisma.user.findUnique({
+    where: { profileName: String(profileName) },
+    include: { mercadopago: true },
+  });
   if (!singleUser) {
     return { notFound: true };
   }
-  const user: MercadoPagoUser = JSON.parse(JSON.stringify(singleUser));
+  const user = JSON.parse(JSON.stringify(singleUser));
   return {
     props: { user },
   };
@@ -144,9 +144,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await axios.get("http://localhost:3000/api/users");
-  const users = res.data.data;
+  const users: User[] = res.data.data;
   const paths = users.map((user) => ({
-    params: { profile: user.name },
+    params: { profile: user.profileName },
   }));
   return { paths, fallback: "blocking" };
 };

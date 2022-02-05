@@ -3,9 +3,19 @@ import Success from "../../components/feedback/Success";
 import SuccessImage from "../../assets/images/feedbackImages/success.svg";
 import FailureImage from "../../assets/images/feedbackImages/failure.svg";
 import PendingImage from "../../assets/images/feedbackImages/pending.svg";
+import { useEffect } from "react";
 
 function Feedback() {
   const { query } = useRouter();
+  const router = useRouter();
+
+  useEffect(() => {
+    const redirect = setTimeout(() => {
+      router.push("/");
+    }, 5000);
+    return () => clearTimeout(redirect);
+  });
+
   const paymentText = {
     success: "Tu Pago fue Exitoso! Muchas Gracias",
     failure: "Ups! Algo Salió Mal. Por favor intentá más tarde",
