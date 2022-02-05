@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { User, Mercadopago } from "@prisma/client";
 import prisma from "../../../lib/prisma";
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -22,6 +21,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(200).json({ success: true, data: mercadoPagoData });
       } catch (error) {
         res.status(400).json({ success: false });
+      }
+      break;
+    case "DELETE":
+      try {
+        const response = await prisma.mercadopago.delete({
+          where: {
+            userPropiId: String(id),
+          },
+        });
+        res.status(200).json({ success: true, data: response });
+      } catch (error) {
+        res.status(400).json({ success: false, error });
       }
       break;
   }

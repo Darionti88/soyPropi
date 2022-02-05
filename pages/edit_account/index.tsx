@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
 import {
@@ -16,21 +16,32 @@ import prisma from "../../lib/prisma";
 import axios from "axios";
 import QRCode from "qrcode";
 import QrCodeViewer from "../../components/QrCode/QrCodeViewer";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 import SaveButton from "../../components/Buttons/SaveButton";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { FullUser, SessionUser } from "../../types/types";
 import { CLIENT_ID, DEV_URL } from "../../mocks/constants";
+import { useRouter } from "next/router";
 
 function EditProfile({ user }: { user: FullUser }) {
   const [newProfileName, setNewProfileName] = useState(user.profileName);
   const [imageUrl, setImageUrl] = useState<string>();
-
+  const [remove, setRemove] = useState<boolean>();
+  const router = useRouter();
   const handleSubmitProfileName = async () => {
-    const response = await axios.put(`/api/users/${user.id}`, {
+    await axios.put(`/api/users/${user.id}`, {
       profileName: newProfileName,
     });
     alert("Nombre de Perfil Actualizado");
+  };
+
+  useEffect(() => {
+    user.mercadopago?.user_id ? setRemove(true) : setRemove(false);
+  }, [remove, user.mercadopago?.user_id]);
+
+  const deleteMpAccount = async () => {
+    await axios.delete(`/api/mercadopago/${user.id}`);
+    router.replace(router.asPath);
   };
 
   const generateQr = async () => {
@@ -80,21 +91,32 @@ function EditProfile({ user }: { user: FullUser }) {
             </FormHelperText>
           </FormControl>
           <div className='flex flex-col justify-center items-center md:justify-start space-y-5 w-full'>
-            <Link
-              href={`https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${user.id}&redirect_uri=${DEV_URL}/api/mercadopago/callback`}
-              passHref>
+            {!remove && (
+              <Link
+                href={`https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${user.id}&redirect_uri=${DEV_URL}/api/mercadopago/callback`}
+                passHref>
+                <Button
+                  rightIcon={<ArrowForwardIcon />}
+                  colorScheme='telegram'
+                  disabled={Boolean(user.mercadopago?.user_id)}
+                  size='lg'
+                  width={300}
+                  variant='solid'>
+                  Enlaza tu cuenta de MP
+                </Button>
+              </Link>
+            )}
+            {remove && (
               <Button
-                rightIcon={<ArrowForwardIcon />}
-                colorScheme='telegram'
-                disabled={Boolean(user.mercadopago?.user_id)}
+                rightIcon={<DeleteIcon />}
+                colorScheme='red'
                 size='lg'
                 width={300}
-                variant='solid'>
-                {user.mercadopago?.user_id
-                  ? "Cuenta ya enlazada"
-                  : "Enlaza tu cuenta de MP"}
+                variant='solid'
+                onClick={deleteMpAccount}>
+                Quitar cuenta MercadoPago
               </Button>
-            </Link>
+            )}
             <Button
               rightIcon={<ArrowForwardIcon />}
               colorScheme='messenger'
