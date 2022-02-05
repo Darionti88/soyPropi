@@ -1,3 +1,5 @@
+import { Mercadopago } from "@prisma/client";
+
 export type ButtonProps = {
   onClick?: () => void;
   type?: any;
@@ -20,4 +22,15 @@ export type SessionUser = {
   email?: string;
   image?: string;
   id?: string;
+};
+
+export type FullUser = {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  emailVerified: boolean;
+  accountType?: string;
+  profileName?: string;
+  mercadopago?: Mercadopago;
 };

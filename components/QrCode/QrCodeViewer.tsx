@@ -17,7 +17,6 @@ const QrCodeViewer: React.FC<QRProps> = ({
       callback: function (doc) {
         doc.save(`propi${profileName}.pdf`);
       },
-      x: -25,
     });
   };
 

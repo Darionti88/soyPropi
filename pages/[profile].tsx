@@ -18,29 +18,25 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { User } from "@prisma/client";
+import { FullUser } from "../types/types";
 
-function Profile({ user }: { user: User }) {
+function Profile({ user }: { user: FullUser }) {
   const [total, setTotal] = useState<string>("");
   const [custom, setCustom] = useState<string>("");
-  const [price, setPrice] = useState(null);
   const [orderData, setOrderData] = useState({
-    userAccessToken: user.mercadopago?.access_token, //Deshardcodear
+    userAccessToken: user.mercadopago?.access_token,
     description: `Propina para ${user?.profileName}`,
     quantity: 1,
   });
-  console.log(user);
 
   const calculateTip = (percentage: number, value: string) => {
     const totalTip = (Number(value) * percentage) / 100;
     return totalTip;
   };
 
-  const startCheckout = async (tip) => {
-    setPrice(tip);
+  const startCheckout = async (tip: number) => {
     const response = await createPreference({ ...orderData, price: tip });
-    console.log(response);
     window.location.href = response.data.urlSandbox;
-    console.log(orderData);
   };
 
   return (
@@ -101,6 +97,7 @@ function Profile({ user }: { user: User }) {
               10%: {total && `$${calculateTip(10, total)}`}
             </Button>
             <Button
+              onClick={() => startCheckout(calculateTip(15, total))}
               colorScheme='messenger'
               size='lg'
               width={300}
@@ -108,6 +105,7 @@ function Profile({ user }: { user: User }) {
               15%: {total && `$${calculateTip(15, total)}`}
             </Button>
             <Button
+              onClick={() => startCheckout(calculateTip(20, total))}
               colorScheme='messenger'
               size='lg'
               width={300}
@@ -115,6 +113,7 @@ function Profile({ user }: { user: User }) {
               20%: {total && `$${calculateTip(20, total)}`}
             </Button>
             <Button
+              onClick={() => startCheckout(Number(custom))}
               colorScheme='messenger'
               size='lg'
               width={300}
@@ -129,13 +128,11 @@ function Profile({ user }: { user: User }) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  await dbConnect();
   const profileName = context.params.profile;
   const singleUser = await prisma.user.findUnique({
     where: { profileName: String(profileName) },
     include: { mercadopago: true },
   });
-  console.log(singleUser);
   if (!singleUser) {
     return { notFound: true };
   }

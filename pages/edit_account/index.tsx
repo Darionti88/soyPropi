@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
 import {
@@ -10,9 +10,7 @@ import {
   InputGroup,
   Button,
 } from "@chakra-ui/react";
-
 import rightArrow from "../../assets/svgIcons/rightArrow.svg";
-// import User from "../../models/User";
 import { User } from "@prisma/client";
 import prisma from "../../lib/prisma";
 import axios from "axios";
@@ -21,9 +19,10 @@ import QrCodeViewer from "../../components/QrCode/QrCodeViewer";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import SaveButton from "../../components/Buttons/SaveButton";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { SessionUser } from "../../types/types";
+import { FullUser, SessionUser } from "../../types/types";
+import { CLIENT_ID, DEV_URL } from "../../mocks/constants";
 
-function EditProfile({ user }: { user: User }) {
+function EditProfile({ user }: { user: FullUser }) {
   const [newProfileName, setNewProfileName] = useState(user.profileName);
   const [imageUrl, setImageUrl] = useState<string>();
 
@@ -35,8 +34,7 @@ function EditProfile({ user }: { user: User }) {
   };
 
   const generateQr = async () => {
-    const baseUrl = window.location.origin;
-    const userProfileQrLink = `${baseUrl}/${newProfileName}`;
+    const userProfileQrLink = `${DEV_URL}/${newProfileName}`;
     try {
       const qrSource = await QRCode.toDataURL(userProfileQrLink);
       setImageUrl(qrSource);
@@ -83,11 +81,12 @@ function EditProfile({ user }: { user: User }) {
           </FormControl>
           <div className='flex flex-col justify-center items-center md:justify-start space-y-5 w-full'>
             <Link
-              href={`https://auth.mercadopago.com.ar/authorization?client_id=6610547979814243&response_type=code&platform_id=mp&state=${user.id}&redirect_uri=http://localhost:3000/api/mercadopago/callback`}
+              href={`https://auth.mercadopago.com.ar/authorization?client_id=${CLIENT_ID}&response_type=code&platform_id=mp&state=${user.id}&redirect_uri=${DEV_URL}/api/mercadopago/callback`}
               passHref>
               <Button
                 rightIcon={<ArrowForwardIcon />}
                 colorScheme='telegram'
+                disabled={Boolean(user.mercadopago?.user_id)}
                 size='lg'
                 width={300}
                 variant='solid'>
@@ -102,7 +101,7 @@ function EditProfile({ user }: { user: User }) {
               size='lg'
               width={300}
               variant='solid'
-              onClick={user.mercadopago?.user_id ? null : generateQr}>
+              onClick={generateQr}>
               Generar mi código QR
             </Button>
           </div>
