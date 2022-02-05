@@ -33,6 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               profileName: body.profileName,
             },
           });
+
           return res.status(200).json({ success: true, data: myUser });
         } else {
           const myUser: User = await prisma.user.update({
@@ -41,10 +42,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               profileName: body.profileName,
             },
           });
+
           return res.status(200).json({ success: true, data: myUser });
         }
       } catch (error) {
-        res.status(400).json({ success: false, msg: "User not Found" });
+        res.status(400).json({ message: "Usuario no encontrado" });
       }
       break;
     default:

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -16,10 +16,18 @@ import SaveButton from "../../components/Buttons/SaveButton";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { SessionUser } from "../../types/types";
 import { User } from "@prisma/client";
+import AlertError from "../../components/Alert/AlertDialog";
 
 const CreateProfileName = ({ user }: { user: User }) => {
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(false);
   const router = useRouter();
+
+  const cancelRef = useRef();
+
+  const onClose = () => {
+    setError(false);
+  };
 
   const profileSchema = Yup.object().shape({
     profileName: Yup.string()
@@ -49,9 +57,8 @@ const CreateProfileName = ({ user }: { user: User }) => {
             resetForm();
             setMessage("");
             router.push(`/edit_account`);
-          } catch (err) {
-            console.log(err);
-            setMessage(err.message);
+          } catch (error) {
+            setError(true), setMessage(error.response.data.message);
           }
         }}>
         {({
@@ -96,7 +103,12 @@ const CreateProfileName = ({ user }: { user: User }) => {
           </form>
         )}
       </Formik>
-      <Text>{message}</Text>
+      <AlertError
+        onClose={onClose}
+        error={error}
+        errorMessage={message}
+        cancelRef={cancelRef}
+      />{" "}
     </div>
   );
 };
