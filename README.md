@@ -8,14 +8,15 @@ When you create an account you can link your Mercado Pago account and the tips w
 The checkout process is handled by Mercado Pago so it is secure and you have nothing to worry about.
 
 PROGRESS OF PROJECT
-The paying flow already works. Still have to make the downloadable PDF with QR code.
+Users can now Register with their Google or Facebook Account, link their MercadoPago Accounts, generate QR Code with their unique url, download a PDF with the Qr Code and receive payments!
+Will be shipping to production somwhere within the next 2 weeks.
 
 🏁 NEXT GOALS 🏁
 
-- Migrate to Typescript (now that i feel more comfortable)
-- Migrate DB to PlanetScale & Prisma (mainly for scalability and free tier is better)
-- Slowly remove ChakraUI (not really using it, i'm loving tailwind)
-- Keep improving UI
+- Migrate to Typescript (now that i feel more comfortable) (85% DONE 🚴)
+- Migrate DB to PlanetScale & Prisma (mainly for scalability and free tier is better) (DONE 🏅)
+- Slowly remove ChakraUI (not really using it, i'm loving tailwind) (ALMOST THERE 🚴🏼)
+- Keep improving UI 
 - Add Unit Tests with Jest and e2e with Cypress
 
 
