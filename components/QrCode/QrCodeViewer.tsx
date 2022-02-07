@@ -49,7 +49,7 @@ const QrCodeViewer: React.FC<QRProps> = ({
           Propi
         </p>
         <p className='text-2xl mb-7'>
-          Escanea el Código QR y elegí el monto de la propina!
+          {`Escanea${"       "} el Código QR y elegí cuanto pagar!`}
         </p>
         <QRcode imageUrl={imageUrl} />
       </div>

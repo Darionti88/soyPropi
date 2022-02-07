@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
 import {
@@ -9,6 +9,7 @@ import {
   InputLeftAddon,
   InputGroup,
   Button,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import rightArrow from "../../assets/svgIcons/rightArrow.svg";
 import { User } from "@prisma/client";
@@ -22,22 +23,44 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { FullUser, SessionUser } from "../../types/types";
 import { CLIENT_ID, DEV_URL } from "../../mocks/constants";
 import { useRouter } from "next/router";
+import * as Yup from "yup";
+import { Formik } from "formik";
+import AlertError from "../../components/Alert/AlertDialog";
 
 function EditProfile({ user }: { user: FullUser }) {
   const [newProfileName, setNewProfileName] = useState(user.profileName);
   const [imageUrl, setImageUrl] = useState<string>();
   const [remove, setRemove] = useState<boolean>();
+  const [message, setMessage] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("");
+
+  const cancelRef = useRef();
+
   const router = useRouter();
-  const handleSubmitProfileName = async () => {
-    await axios.put(`/api/users/${user.id}`, {
-      profileName: newProfileName,
-    });
-    alert("Nombre de Perfil Actualizado");
+  // const handleSubmitProfileName = async () => {
+  //   await axios.put(`/api/users/${user.id}`, {
+  //     profileName: newProfileName,
+  //   });
+  //   alert("Nombre de Perfil Actualizado");
+  // };
+
+  const onClose = () => {
+    setIsOpen(false);
   };
 
+  const profileSchema = Yup.object().shape({
+    profileName: Yup.string()
+      .min(4, "Muy corto! Mínimo 4 letras.")
+      .matches(/^\S*$/, "No puede tener espacios entre las palabras")
+      .max(20, "Too Long!")
+      .required("Required"),
+  });
+
   useEffect(() => {
+    setStatus("");
     user.mercadopago?.user_id ? setRemove(true) : setRemove(false);
-  }, [remove, user.mercadopago?.user_id]);
+  }, [remove, user.mercadopago?.user_id, newProfileName]);
 
   const deleteMpAccount = async () => {
     await axios.delete(`/api/mercadopago/${user.id}`);
@@ -63,33 +86,67 @@ function EditProfile({ user }: { user: FullUser }) {
           <h1 className='text-3xl sm:text-5xl font-hindi font-bold sm:mt-5'>
             Edita tu Cuenta
           </h1>
-          <FormControl id='profileName' mb={20}>
-            <FormLabel>Nombre de Perfil</FormLabel>
-            <div className='flex flex-col md:flex-row space-y-3 md:space-x-3 items-baseline'>
-              <InputGroup size='lg'>
-                <InputLeftAddon>/</InputLeftAddon>
-                <Input
-                  variant='filled'
-                  size='lg'
-                  type='text'
-                  value={newProfileName}
-                  placeholder={user.profileName}
-                  backgroundColor='#FFF'
-                  onChange={(e) => setNewProfileName(e.target.value)}
-                />
-              </InputGroup>
-              <SaveButton
-                onClick={handleSubmitProfileName}
-                bgColor='bg-primary-mpago700'
-                title='Guardar'
-                icon={rightArrow}
-                width='sm:w-2/4 w-full'
-              />
-            </div>
-            <FormHelperText>
-              Podes cambiar tu Nombre de Perfil siempre y cuando no esté en uso
-            </FormHelperText>
-          </FormControl>
+          <Formik
+            initialValues={{ profileName: user.profileName }}
+            validationSchema={profileSchema}
+            onSubmit={async (values) => {
+              try {
+                await axios.put(`/api/users/${user.id}`, values);
+                setNewProfileName(values.profileName);
+                setIsOpen(true),
+                  setMessage("Tu nombre se actualizó correctamente! 😃");
+              } catch (error) {
+                setStatus("error"),
+                  setMessage(error.response.data.message),
+                  setIsOpen(true);
+              }
+            }}>
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <form className='md:w-4/6'>
+                <FormControl
+                  id='profileName'
+                  mb={20}
+                  isInvalid={Boolean(
+                    touched.profileName && errors.profileName
+                  )}>
+                  <FormLabel>Nombre de Perfil</FormLabel>
+                  <div className='flex flex-col md:flex-row space-y-3 md:space-x-3 items-baseline'>
+                    <InputGroup size='lg'>
+                      <InputLeftAddon>/</InputLeftAddon>
+                      <Input
+                        variant='filled'
+                        size='lg'
+                        type='text'
+                        value={values.profileName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        backgroundColor='#FFF'
+                      />
+                    </InputGroup>
+                    <SaveButton
+                      onClick={handleSubmit}
+                      bgColor='bg-primary-mpago700'
+                      title='Guardar'
+                      icon={rightArrow}
+                      width='sm:w-2/4 w-full'
+                    />
+                  </div>
+                  <FormHelperText>
+                    Podes cambiar tu Nombre de Perfil siempre y cuando no esté
+                    en uso
+                  </FormHelperText>
+                  <FormErrorMessage>{errors.profileName}</FormErrorMessage>
+                </FormControl>
+              </form>
+            )}
+          </Formik>
           <div className='flex flex-col justify-center items-center md:justify-start space-y-5 w-full'>
             {!remove && (
               <Link
@@ -135,6 +192,13 @@ function EditProfile({ user }: { user: FullUser }) {
           profileName={newProfileName}
         />
       )}
+      <AlertError
+        onClose={onClose}
+        status={status}
+        isOpen={isOpen}
+        errorMessage={message}
+        cancelRef={cancelRef}
+      />{" "}
     </div>
   );
 }

@@ -15,18 +15,21 @@ import rightArrow from "../../assets/svgIcons/rightArrow.svg";
 import SaveButton from "../../components/Buttons/SaveButton";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { SessionUser } from "../../types/types";
-import { User } from "@prisma/client";
+import { Session, User } from "@prisma/client";
 import AlertError from "../../components/Alert/AlertDialog";
+import prisma from "../../lib/prisma";
 
 const CreateProfileName = ({ user }: { user: User }) => {
   const [message, setMessage] = useState("");
-  const [error, setError] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [status, setStatus] = useState<string>("");
+
   const router = useRouter();
 
   const cancelRef = useRef();
 
   const onClose = () => {
-    setError(false);
+    setIsOpen(false);
   };
 
   const profileSchema = Yup.object().shape({
@@ -45,10 +48,9 @@ const CreateProfileName = ({ user }: { user: User }) => {
         Elegí tu nombre de Usuario
       </h1>
       <Formik
-        initialValues={{ profileName: "", accountType: "individual" }}
+        initialValues={{ profileName: "" }}
         validationSchema={profileSchema}
         onSubmit={async (values, { resetForm }) => {
-          if (values.profileName.length < 3) alert("Nombre muy corto");
           try {
             await axios.put(`/api/users/${user.id}`, {
               ...values,
@@ -58,7 +60,9 @@ const CreateProfileName = ({ user }: { user: User }) => {
             setMessage("");
             router.push(`/edit_account`);
           } catch (error) {
-            setError(true), setMessage(error.response.data.message);
+            setStatus("error"),
+              setIsOpen(true),
+              setMessage(error.response.data.message);
           }
         }}>
         {({
@@ -92,6 +96,10 @@ const CreateProfileName = ({ user }: { user: User }) => {
               <FormHelperText>
                 Este va a ser el nombre por el que los demás te podrán encontrar
               </FormHelperText>
+              <FormHelperText>
+                Asegurate que el nombre no contenga espacios y tenga por lo
+                menos 4 letras.
+              </FormHelperText>
               <FormErrorMessage>{errors.profileName}</FormErrorMessage>
             </FormControl>
             <SaveButton
@@ -105,7 +113,8 @@ const CreateProfileName = ({ user }: { user: User }) => {
       </Formik>
       <AlertError
         onClose={onClose}
-        error={error}
+        status={status}
+        isOpen={setIsOpen}
         errorMessage={message}
         cancelRef={cancelRef}
       />{" "}
@@ -117,20 +126,33 @@ export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const session = await getSession(context);
-  const user = session.user;
+  const user: SessionUser = session.user;
   if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/signin",
         permanent: false,
       },
     };
-  }
-  return {
-    props: {
-      user,
-    },
-  };
+  } else if (session) {
+    const singleUser: User = await prisma.user.findUnique({
+      where: { id: user.id },
+    });
+    // const loggedUser: User = JSON.parse(JSON.stringify(singleUser));
+    if (singleUser?.profileName) {
+      return {
+        redirect: {
+          destination: "/edit_account",
+          permanent: false,
+        },
+      };
+    }
+  } else
+    return {
+      props: {
+        user,
+      },
+    };
 };
 
 export default CreateProfileName;
