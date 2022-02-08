@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
         {session && (
           <li>
             <Link href='/edit_account' passHref>
-              <strong className='hover:cursor-pointer'> Profile</strong>
+              <strong className='hover:cursor-pointer'> Mi Perfil </strong>
             </Link>
           </li>
         )}

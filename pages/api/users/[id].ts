@@ -15,7 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         const singleUser: User = await prisma.user.findUnique({
           where: {
-            id: id,
+            id: String(id),
           },
         });
         res.status(200).json({ success: true, data: singleUser });
@@ -27,24 +27,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         if (body.accountType) {
           const myUser: User = await prisma.user.update({
-            where: { id: id },
+            where: { id: String(id) },
             data: {
               accountType: body.accountType,
               profileName: body.profileName,
             },
           });
+
           return res.status(200).json({ success: true, data: myUser });
         } else {
           const myUser: User = await prisma.user.update({
-            where: { id: id },
+            where: { id: String(id) },
             data: {
               profileName: body.profileName,
             },
           });
+
           return res.status(200).json({ success: true, data: myUser });
         }
       } catch (error) {
-        res.status(400).json({ success: false, msg: "User not Found" });
+        res.status(400).json({ message: "Usuario no encontrado" });
       }
       break;
     default:
