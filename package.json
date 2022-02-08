@@ -23,8 +23,6 @@
     "jsonpointer": "^5.0.0",
     "jspdf": "^2.5.1",
     "mercadopago": "^1.5.9",
-    "mongodb": "^3.5.9",
-    "mongoose": "^6.0.12",
     "nanoid": "^3.2.0",
     "next": "^12.0.9",
     "next-auth": "^4.1.2",

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
-
 import axios from "axios";
-import dbConnect from "../lib/mongodb";
 import Image from "next/image";
 import prisma from "../lib/prisma";
 import { createPreference } from "../lib/mercadopago";
