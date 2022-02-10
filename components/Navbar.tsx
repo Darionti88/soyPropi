@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
         {!session ? (
           <li>
             <Link href='/signin' passHref>
-              <button className='button_signin'>
+              <button data-cy='signin' className='button_signin'>
                 <span className='button_top text-lg'> Ingresar </span>
               </button>
             </Link>
