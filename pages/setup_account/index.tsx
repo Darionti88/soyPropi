@@ -114,7 +114,7 @@ const CreateProfileName = ({ user }: { user: User }) => {
       <AlertError
         onClose={onClose}
         status={status}
-        isOpen={setIsOpen}
+        isOpen={isOpen}
         errorMessage={message}
         cancelRef={cancelRef}
       />{" "}
@@ -138,7 +138,6 @@ export const getServerSideProps: GetServerSideProps = async (
     const singleUser: User = await prisma.user.findUnique({
       where: { id: user.id },
     });
-    // const loggedUser: User = JSON.parse(JSON.stringify(singleUser));
     if (singleUser?.profileName) {
       return {
         redirect: {
@@ -146,13 +145,13 @@ export const getServerSideProps: GetServerSideProps = async (
           permanent: false,
         },
       };
-    }
-  } else
-    return {
-      props: {
-        user,
-      },
-    };
+    } else
+      return {
+        props: {
+          user,
+        },
+      };
+  }
 };
 
 export default CreateProfileName;
