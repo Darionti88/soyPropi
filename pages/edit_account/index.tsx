@@ -38,12 +38,6 @@ function EditProfile({ user }: { user: FullUser }) {
   const cancelRef = useRef();
 
   const router = useRouter();
-  // const handleSubmitProfileName = async () => {
-  //   await axios.put(`/api/users/${user.id}`, {
-  //     profileName: newProfileName,
-  //   });
-  //   alert("Nombre de Perfil Actualizado");
-  // };
 
   const onClose = () => {
     setIsOpen(false);

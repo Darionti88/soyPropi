@@ -39,51 +39,45 @@ function Profile({ user }: { user: FullUser }) {
 
   return (
     <>
-      <div className='container mx-auto h-screen items-center flex justify-center flex-col'>
-        <div className='block h-300 mb-10'>
-          <Image
-            className='rounded-full'
-            src={user.image}
-            width={200}
-            height={200}
-            alt='userAvatar'
-            layout='fixed'
-          />
-        </div>
-        <h1 className='text-4xl mb-10'>
+      <div className='container mx-auto items-center flex justify-center flex-col mb-4 '>
+        <h1 className='md:text-4xl text-2xl md:mb-10 mb-4 font-hindi text-center mt-10'>
           Gracias por darle propina a {user.profileName}
         </h1>
-        <FormControl id='profileName' mb={20} w='20%'>
-          <FormLabel>Total de la Cuenta</FormLabel>
-          <HStack>
-            <InputGroup size='lg'>
-              <InputLeftAddon>ARS</InputLeftAddon>
-              <Input
-                variant='filled'
-                size='lg'
-                type='number'
-                placeholder='1500'
-                value={total}
-                backgroundColor='#FFF'
-                onChange={(e) => setTotal(e.target.value)}
-              />
-            </InputGroup>
-          </HStack>
-          <HStack>
-            <InputGroup size='lg' mt={5}>
-              <InputLeftAddon>Custom</InputLeftAddon>
-              <Input
-                variant='filled'
-                size='lg'
-                type='number'
-                placeholder='120'
-                value={custom}
-                backgroundColor='#FFF'
-                onChange={(e) => setCustom(e.target.value)}
-              />
-            </InputGroup>
-          </HStack>
-        </FormControl>
+        <div className='w-4/6 md:w-1/5'>
+          <FormControl id='profileName' mb={20} w='100%'>
+            <FormLabel size='xl' textAlign='center'>
+              Total de la Cuenta
+            </FormLabel>
+            <HStack>
+              <InputGroup size='lg'>
+                <InputLeftAddon>ARS</InputLeftAddon>
+                <Input
+                  variant='filled'
+                  size='lg'
+                  type='number'
+                  placeholder='1500'
+                  value={total}
+                  backgroundColor='#FFF'
+                  onChange={(e) => setTotal(e.target.value)}
+                />
+              </InputGroup>
+            </HStack>
+            <HStack>
+              <InputGroup size='lg' mt={5}>
+                <InputLeftAddon>Custom</InputLeftAddon>
+                <Input
+                  variant='filled'
+                  size='lg'
+                  type='number'
+                  placeholder='120'
+                  value={custom}
+                  backgroundColor='#FFF'
+                  onChange={(e) => setCustom(e.target.value)}
+                />
+              </InputGroup>
+            </HStack>
+          </FormControl>
+        </div>
         <ButtonGroup className='pb-8'>
           <VStack>
             <Button
