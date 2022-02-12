@@ -7,7 +7,7 @@ const Footer: FC = () => {
   const year: number = new Date().getFullYear();
 
   return (
-    <>
+    <div className='absolute bottom-0'>
       <footer className=' h-14 w-screen bg-orange-200 flex items-center px-10 justify-evenly'>
         <p className='text-1xl md:text-2xl text-text font-metro font-bold'>
           Propi © {year}
@@ -19,7 +19,7 @@ const Footer: FC = () => {
         </p>
       </footer>
       <DisclaimerModal isOpen={isOpen} onClose={onClose} />
-    </>
+    </div>
   );
 };
 

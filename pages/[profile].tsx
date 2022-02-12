@@ -39,17 +39,7 @@ function Profile({ user }: { user: FullUser }) {
 
   return (
     <>
-      <div className='container mx-auto h-screen items-center flex justify-center flex-col'>
-        <div className='block h-300 mb-10'>
-          <Image
-            className='rounded-full'
-            src={user.image}
-            width={200}
-            height={200}
-            alt='userAvatar'
-            layout='fixed'
-          />
-        </div>
+      <div className='container mx-auto items-center flex justify-center flex-col'>
         <h1 className='text-4xl mb-10'>
           Gracias por darle propina a {user.profileName}
         </h1>

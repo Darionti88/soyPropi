@@ -36,8 +36,8 @@ const CreateProfileName = ({ user }: { user: User }) => {
     profileName: Yup.string()
       .min(4, "Muy corto! Mínimo 4 letras.")
       .matches(/^\S*$/, "No puede tener espacios entre las palabras")
-      .max(20, "Too Long!")
-      .required("Required"),
+      .max(20, "Muy Largo! Máximo 20 letras.")
+      .required("Requerido"),
   });
 
   return (

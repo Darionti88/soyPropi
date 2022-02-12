@@ -20,7 +20,7 @@ class MyDocument extends Document {
             rel='stylesheet'
           />
         </Head>
-        <body className='bg-background'>
+        <body className='bg-background h-screen'>
           <Main />
           <NextScript />
         </body>
