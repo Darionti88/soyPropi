@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Navbar />
         <Component {...pageProps} />
       </SessionProvider>
-      <Footer />
+      {/*<Footer />*/}
     </ChakraProvider>
   );
 }

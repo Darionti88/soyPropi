@@ -38,46 +38,46 @@ function Profile({ user }: { user: FullUser }) {
   };
 
   return (
-    <div className='container mx-auto items-center flex flex-1 justify-center flex-col mb-4 bg-red-700'>
-      {/* <h1 className='md:text-4xl text-2xl md:mb-10 mb-4 font-hindi text-center mt-10'>
-          Gracias por darle propina a {user.profileName}
-        </h1> */}
-      {/* <div className='w-4/6 md:w-1/5'>
-          <FormControl id='profileName' mb={20} w='100%'>
-            <FormLabel size='xl' textAlign='center'>
-              Total de la Cuenta
-            </FormLabel>
-            <HStack>
-              <InputGroup size='lg'>
-                <InputLeftAddon>ARS</InputLeftAddon>
-                <Input
-                  variant='filled'
-                  size='lg'
-                  type='number'
-                  placeholder='1500'
-                  value={total}
-                  backgroundColor='#FFF'
-                  onChange={(e) => setTotal(e.target.value)}
-                />
-              </InputGroup>
-            </HStack>
-            <HStack>
-              <InputGroup size='lg' mt={5}>
-                <InputLeftAddon>Custom</InputLeftAddon>
-                <Input
-                  variant='filled'
-                  size='lg'
-                  type='number'
-                  placeholder='120'
-                  value={custom}
-                  backgroundColor='#FFF'
-                  onChange={(e) => setCustom(e.target.value)}
-                />
-              </InputGroup>
-            </HStack>
-          </FormControl>
-        </div> */}
-      {/* {user.mercadopago ? (
+    <div className='container mx-auto items-center flex flex-1 justify-center flex-col mb-4'>
+      <h1 className='md:text-4xl text-2xl md:mb-10 mb-4 font-hindi text-center mt-10'>
+        Gracias por darle propina a {user.profileName}
+      </h1>
+      <div className='w-4/6 md:w-1/5'>
+        <FormControl id='profileName' mb={20} w='100%'>
+          <FormLabel size='xl' textAlign='center'>
+            Total de la Cuenta
+          </FormLabel>
+          <HStack>
+            <InputGroup size='lg'>
+              <InputLeftAddon>ARS</InputLeftAddon>
+              <Input
+                variant='filled'
+                size='lg'
+                type='number'
+                placeholder='1500'
+                value={total}
+                backgroundColor='#FFF'
+                onChange={(e) => setTotal(e.target.value)}
+              />
+            </InputGroup>
+          </HStack>
+          <HStack>
+            <InputGroup size='lg' mt={5}>
+              <InputLeftAddon>Custom</InputLeftAddon>
+              <Input
+                variant='filled'
+                size='lg'
+                type='number'
+                placeholder='120'
+                value={custom}
+                backgroundColor='#FFF'
+                onChange={(e) => setCustom(e.target.value)}
+              />
+            </InputGroup>
+          </HStack>
+        </FormControl>
+      </div>
+      {user.mercadopago ? (
         <ButtonGroup className='pb-8'>
           <VStack>
             <Button
@@ -121,7 +121,7 @@ function Profile({ user }: { user: FullUser }) {
             Mercado Pago
           </h1>
         </div>
-      )} */}
+      )}
     </div>
   );
 }
