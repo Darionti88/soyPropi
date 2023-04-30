@@ -19,7 +19,7 @@ const SaveButton: React.FC<ButtonProps> = ({
     width ? width : "w-full"
   } pl-3 rounded-xl flex font-bold justify-center py-3 
   ${bgColor} text-white font-metro text-xl`}>
-      {title}
+      {title || "Guardar"}
       <div className='icon'>
         <Image src={icon} alt='icon' />
       </div>
