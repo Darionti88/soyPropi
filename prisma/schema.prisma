@@ -32,7 +32,6 @@ model Account {
 
   user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
@@ -58,7 +57,6 @@ model User {
   accounts      Account?
   sessions      Session[]
   mercadopago   Mercadopago?
-
 }
 
 model Mercadopago {
@@ -72,8 +70,6 @@ model Mercadopago {
   token_type    String
   userPropi     User?   @relation(fields: [userPropiId], references: [id], onUpdate: NoAction)
   userPropiId   String  @unique
-
-
 
   @@index([userPropiId])
   @@map("mercadopago")

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Navbar: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   return (
@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
         </Link>
       </div>
       <ul className='flex flex-1 items-center space-x-3 md:space-x-20 justify-end text-2xl md:pr-10 '>
-        {session && (
+        {status === "authenticated" && (
           <li>
             <Link href='/edit_account' passHref>
               <strong className='hover:cursor-pointer'> Mi Perfil </strong>
@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
           </li>
         )}
 
-        {!session ? (
+        {status === "unauthenticated" ? (
           <li>
             <Link href='/signin' passHref>
               <button data-cy='signin' className='button_signin'>
