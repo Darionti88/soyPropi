@@ -38,12 +38,11 @@ function Profile({ user }: { user: FullUser }) {
   };
 
   return (
-    <>
-      <div className='container mx-auto items-center flex justify-center flex-col mb-4 '>
-        <h1 className='md:text-4xl text-2xl md:mb-10 mb-4 font-hindi text-center mt-10'>
+    <div className='container mx-auto items-center flex flex-1 justify-center flex-col mb-4 bg-red-700'>
+      {/* <h1 className='md:text-4xl text-2xl md:mb-10 mb-4 font-hindi text-center mt-10'>
           Gracias por darle propina a {user.profileName}
-        </h1>
-        <div className='w-4/6 md:w-1/5'>
+        </h1> */}
+      {/* <div className='w-4/6 md:w-1/5'>
           <FormControl id='profileName' mb={20} w='100%'>
             <FormLabel size='xl' textAlign='center'>
               Total de la Cuenta
@@ -77,7 +76,8 @@ function Profile({ user }: { user: FullUser }) {
               </InputGroup>
             </HStack>
           </FormControl>
-        </div>
+        </div> */}
+      {/* {user.mercadopago ? (
         <ButtonGroup className='pb-8'>
           <VStack>
             <Button
@@ -114,8 +114,15 @@ function Profile({ user }: { user: FullUser }) {
             </Button>
           </VStack>
         </ButtonGroup>
-      </div>
-    </>
+      ) : (
+        <div className='h-full flex items-center bg-green-100 justify-center'>
+          <h1 className='text-2xl text-center'>
+            Lo siento, el usuario que buscas todavía no Linkeo su cuenta de
+            Mercado Pago
+          </h1>
+        </div>
+      )} */}
+    </div>
   );
 }
 

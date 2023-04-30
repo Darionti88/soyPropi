@@ -73,7 +73,7 @@ function EditProfile({ user }: { user: FullUser }) {
 
   return (
     <div
-      className='container mx-auto w-5/6 md:w-2/3 flex flex-col items-center 
+      className='container mx-auto w-5/6 md:w-2/3 flex flex-1   flex-col items-center 
     justify-center space-y-10'>
       {!imageUrl ? (
         <>

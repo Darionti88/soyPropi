@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: red;
+#__next {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  position: relative;
 }
 
 /* From cssbuttons.io by @adamgiebl */
