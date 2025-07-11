@@ -2,7 +2,7 @@ name: Create Release
 
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   release:
@@ -44,6 +44,29 @@ jobs:
         git config --local user.name "GitHub Action"
         git tag -a ${{ steps.package-version.outputs.version }} -m "Release ${{ steps.package-version.outputs.version }}"
         git push origin ${{ steps.package-version.outputs.version }}
+        
+    - name: Generate changelog
+      if: steps.check-tag.outputs.tag_exists == 'false'
+      id: changelog
+      run: |
+        # Get the previous tag
+        PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        
+        # Generate changelog
+        if [ -n "$PREVIOUS_TAG" ]; then
+          echo "## Changes since $PREVIOUS_TAG" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          git log --pretty=format:"- %s (%h)" $PREVIOUS_TAG..HEAD >> CHANGELOG.md
+        else
+          echo "## Initial Release" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "- Initial release of soyPropi" >> CHANGELOG.md
+        fi
+        
+        # Set output for use in release
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        cat CHANGELOG.md >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
         
     - name: Create GitHub Release
       if: steps.check-tag.outputs.tag_exists == 'false'
