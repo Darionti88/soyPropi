@@ -1,0 +1,58 @@
+name: Create Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Get version from package.json
+      id: package-version
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "version=v$VERSION" >> $GITHUB_OUTPUT
+        echo "raw_version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Check if tag exists
+      id: check-tag
+      run: |
+        if git rev-parse "refs/tags/${{ steps.package-version.outputs.version }}" >/dev/null 2>&1; then
+          echo "Tag ${{ steps.package-version.outputs.version }} already exists"
+          echo "tag_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "Tag ${{ steps.package-version.outputs.version }} does not exist"
+          echo "tag_exists=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Create and push tag
+      if: steps.check-tag.outputs.tag_exists == 'false'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git tag -a ${{ steps.package-version.outputs.version }} -m "Release ${{ steps.package-version.outputs.version }}"
+        git push origin ${{ steps.package-version.outputs.version }}
+        
+    - name: Create GitHub Release
+      if: steps.check-tag.outputs.tag_exists == 'false'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.package-version.outputs.version }}
+        release_name: Release ${{ steps.package-version.outputs.version }}
+        body: ${{ steps.changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
